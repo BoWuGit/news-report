@@ -5,12 +5,12 @@
 这个项目的愿景是顺应个人AI助手的发展，比如[OpenClaw](https://github.com/openclaw/openclaw)等包含用户基本信息和上下文的Agent，提供用户获取个性化新闻信息的周边工具，包括：
 
 * SaaS服务的信息源，比如[RSS Provider](https://www.inoreader.com/blog/2026/03/automated-intelligence-reports-for-insights-delivered-to-you.html)、[Readwise CLI](https://x.com/readwise/status/2034302848805241282)等
-* Agent Skills，比如聚合优质AI科技信源，并生成总结简报
+* [Agent Skills](https://agentskills.io)，比如聚合优质AI科技信源，并生成总结简报
 * 信息处理转换的工具，比如播客转录总结[Podwise CLI](https://x.com/PodwiseHQ/status/2036406673493909843)
 
 项目第一阶段是先收集已有和新出现的服务，整理分类来分享，看看用户的喜好和需求。
 
-然后在此基础上，会设计整合项目中提到的资源，开发新的工具和功能，面向用户Agent提供服务，包括发现优质信息源，信息处理转换，生成简报等，类比为面向Agent的[RSSHub](https://rsshub.app/)。
+然后在此基础上，会设计整合项目中提到的资源，开发新的工具和功能，面向用户Agent提供服务，包括发现优质信息源，信息处理转换，生成简报等，类比为面向Agent的[RSSHub](https://rsshub.app/)，以及面向新闻简报的[MCP Servers](https://mcp.so/)。
 
 ### 前置依赖和假定
 

@@ -44,7 +44,7 @@
 | [Inoreader Intelligence Reports](https://www.inoreader.com/blog/2026/03/automated-intelligence-reports-for-insights-delivered-to-you.html) | RSS 阅读器，支持自动化智能报告 |
 | [Readwise CLI](https://x.com/readwise/status/2034302848805241282) | 阅读高亮和文章的 CLI 工具，支持 Agent 接入 |
 
-### Agent Skills / CLI 工具
+### [Agent Skills](https://agentskills.io) / CLI 工具
 
 | 工具 | 说明 |
 |------|------|
