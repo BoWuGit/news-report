@@ -53,7 +53,8 @@
 
 ## 前置依赖和假定
 
-- AI 生态的用户 Memory 会越来越成熟（[OpenClaw](https://github.com/openclaw/openclaw)、各大 Super App 等）
+- AI 生态的用户 Memory 会越来越成熟
+  - 不管是 Local First 的 [OpenClaw](https://github.com/openclaw/openclaw)，还是各大 Super App
   - 尽管仍有挑战（如 [Karpathy 指出的记忆干扰问题](https://x.com/karpathy/status/2036836816654147718)）
 - Agent 需要能缓解用户的信息过载——信息处理总结是 AI 擅长的
 
