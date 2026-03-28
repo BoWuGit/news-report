@@ -1,0 +1,1 @@
+"""News Report prototype package."""

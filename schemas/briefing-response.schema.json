@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://news-report.local/schemas/briefing-response.schema.json",
+  "title": "Briefing Response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "generated_at",
+    "query",
+    "items",
+    "coverage"
+  ],
+  "properties": {
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "topics",
+        "sources",
+        "language",
+        "max_items",
+        "summary_style"
+      ],
+      "properties": {
+        "topics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "language": {
+          "type": "string"
+        },
+        "max_items": {
+          "type": "integer"
+        },
+        "summary_style": {
+          "type": "string"
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "title",
+          "source",
+          "content_type",
+          "url",
+          "published_at",
+          "summary",
+          "why_it_matters",
+          "score",
+          "score_breakdown",
+          "tags"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "content_type": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "published_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "why_it_matters": {
+            "type": "string"
+          },
+          "score": {
+            "type": "number"
+          },
+          "score_breakdown": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_quality",
+              "topic_match",
+              "preference_match",
+              "freshness",
+              "diversity"
+            ],
+            "properties": {
+              "source_quality": {
+                "type": "number"
+              },
+              "topic_match": {
+                "type": "number"
+              },
+              "preference_match": {
+                "type": "number"
+              },
+              "freshness": {
+                "type": "number"
+              },
+              "diversity": {
+                "type": "number"
+              }
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "requested_sources",
+        "matched_sources",
+        "generated_candidates",
+        "returned_items"
+      ],
+      "properties": {
+        "requested_sources": {
+          "type": "integer"
+        },
+        "matched_sources": {
+          "type": "integer"
+        },
+        "generated_candidates": {
+          "type": "integer"
+        },
+        "returned_items": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

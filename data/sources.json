@@ -1,0 +1,56 @@
+[
+  {
+    "id": "inoreader-intelligence-reports",
+    "name": "Inoreader Intelligence Reports",
+    "url": "https://www.inoreader.com/blog/2026/03/automated-intelligence-reports-for-insights-delivered-to-you.html",
+    "category": "saas_source_service",
+    "interface_types": ["web"],
+    "content_types": ["rss", "article"],
+    "open_source": false,
+    "agent_friendly": "low",
+    "stage": "active",
+    "pricing": "paid",
+    "summary": "RSS reading product with automated intelligence reporting features.",
+    "notes": [
+      "Useful as a benchmark for reporting UX and scheduled briefing workflows.",
+      "Not an agent-first or open integration surface yet."
+    ],
+    "last_verified": "2026-03-28"
+  },
+  {
+    "id": "readwise-cli",
+    "name": "Readwise CLI",
+    "url": "https://x.com/readwise/status/2034302848805241282",
+    "category": "agent_tool",
+    "interface_types": ["cli"],
+    "content_types": ["article", "highlight", "read_later"],
+    "open_source": false,
+    "agent_friendly": "medium",
+    "stage": "active",
+    "pricing": "paid",
+    "summary": "CLI access to saved reading data that can be composed into agent workflows.",
+    "notes": [
+      "Strong bridge between personal knowledge workflows and agent automation.",
+      "Depends on the user's upstream Readwise usage."
+    ],
+    "last_verified": "2026-03-28"
+  },
+  {
+    "id": "podwise-cli",
+    "name": "Podwise CLI",
+    "url": "https://github.com/hardhackerlabs/podwise-cli",
+    "category": "agent_tool",
+    "interface_types": ["cli", "mcp"],
+    "content_types": ["podcast", "transcript", "summary"],
+    "open_source": true,
+    "agent_friendly": "high",
+    "stage": "active",
+    "pricing": "mixed",
+    "summary": "Podcast summarization and transcript workflow with CLI and MCP support.",
+    "notes": [
+      "A strong example of vertical tool design for agent consumption.",
+      "Good reference for how News Report can expose structured outputs."
+    ],
+    "last_verified": "2026-03-28"
+  }
+]

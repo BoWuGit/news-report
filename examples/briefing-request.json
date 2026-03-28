@@ -1,0 +1,13 @@
+{
+  "topics": ["AI", "open source"],
+  "sources": ["podwise-cli", "readwise-cli", "inoreader-intelligence-reports"],
+  "language": "zh-CN",
+  "max_items": 5,
+  "summary_style": "concise",
+  "user_profile": {
+    "explicit_preferences": ["agent tools", "developer workflows", "local first"],
+    "blocked_topics": ["crypto trading"],
+    "time_decay_days": 30,
+    "diversity_floor": 0.2
+  }
+}
