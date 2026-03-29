@@ -8,7 +8,7 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 
 - id: `podwise-cli`
 - url: https://github.com/hardhackerlabs/podwise-cli
-- interfaces: `cli`, `mcp`
+- interfaces: `cli`, `mcp`, `skills`
 - content types: `podcast`, `transcript`, `summary`
 - open source: `yes`
 - agent friendly: `high`

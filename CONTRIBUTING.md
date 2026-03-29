@@ -32,3 +32,9 @@
 - 过早引入复杂依赖
 - 在没有统一 schema 前直接接很多 source adapter
 - 直接把“个性化排序”绑定到隐式用户画像
+
+
+## 语言约定
+
+- 代码、schema、commit message 用英文
+- 面向社区的文档（vision.md、README.md、REVIEW.md）可以中英双语

@@ -40,7 +40,7 @@
     "name": "Podwise CLI",
     "url": "https://github.com/hardhackerlabs/podwise-cli",
     "category": "agent_tool",
-    "interface_types": ["cli", "mcp"],
+    "interface_types": ["cli", "mcp", "skills"],
     "content_types": ["podcast", "transcript", "summary"],
     "open_source": true,
     "agent_friendly": "high",

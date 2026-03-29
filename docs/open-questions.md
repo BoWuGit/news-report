@@ -1,5 +1,7 @@
 # Open Questions
 
+> 部分问题在 [REVIEW.md](../REVIEW.md) 中有更详细的分析和建议。
+
 ## 产品问题
 
 1. News Report 的核心用户是谁

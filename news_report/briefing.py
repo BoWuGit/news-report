@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
-from news_report.adapters import build_adapter_registry
-
+from news_report.mock_adapters import build_adapter_registry
 
 ALLOWED_SUMMARY_STYLES = {"headline_only", "concise", "detailed"}
 AGENT_FRIENDLY_WEIGHT = {"low": 0.2, "medium": 0.6, "high": 1.0}
@@ -19,10 +18,18 @@ def validate_request(request: object) -> dict:
     if missing:
         raise ValueError(f"Missing request fields: {', '.join(sorted(missing))}")
 
-    if not isinstance(request["topics"], list) or not request["topics"] or not all(isinstance(item, str) and item.strip() for item in request["topics"]):
+    if (
+        not isinstance(request["topics"], list)
+        or not request["topics"]
+        or not all(isinstance(item, str) and item.strip() for item in request["topics"])
+    ):
         raise ValueError("topics must be a non-empty array of strings")
 
-    if not isinstance(request["sources"], list) or not request["sources"] or not all(isinstance(item, str) and item.strip() for item in request["sources"]):
+    if (
+        not isinstance(request["sources"], list)
+        or not request["sources"]
+        or not all(isinstance(item, str) and item.strip() for item in request["sources"])
+    ):
         raise ValueError("sources must be a non-empty array of strings")
 
     if not isinstance(request["language"], str) or len(request["language"].strip()) < 2:
@@ -61,7 +68,12 @@ def normalize_terms(values: list[str]) -> list[str]:
     return [value.strip().lower() for value in values if value.strip()]
 
 
-def compute_score(candidate: dict, request: dict, selected_sources: list[dict], source_counts: dict[str, int]) -> tuple[float, dict]:
+def compute_score(
+    candidate: dict,
+    request: dict,
+    selected_sources: list[dict],
+    source_counts: dict[str, int],
+) -> tuple[float, dict]:
     profile = request["user_profile"]
     topics = normalize_terms(request["topics"])
     preferences = normalize_terms(profile["explicit_preferences"])
@@ -95,13 +107,7 @@ def compute_score(candidate: dict, request: dict, selected_sources: list[dict], 
         "diversity": round(diversity, 3),
     }
 
-    score = (
-        0.3 * source_quality
-        + 0.25 * topic_match
-        + 0.2 * preference_match
-        + 0.15 * freshness
-        + 0.1 * diversity
-    )
+    score = 0.3 * source_quality + 0.25 * topic_match + 0.2 * preference_match + 0.15 * freshness + 0.1 * diversity
     return round(score, 4), score_breakdown
 
 

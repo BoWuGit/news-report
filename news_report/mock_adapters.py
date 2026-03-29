@@ -3,7 +3,6 @@ from __future__ import annotations
 from copy import deepcopy
 from datetime import UTC, datetime, timedelta
 
-
 SOURCE_ITEM_TEMPLATES = {
     "podwise-cli": [
         {
@@ -30,7 +29,9 @@ SOURCE_ITEM_TEMPLATES = {
             "days_ago": 1,
             "tags": ["readwise", "memory", "personalization"],
             "angles": ["memory", "highlights", "developer workflows"],
-            "summary_seed": "Provides a practical bridge between a user's reading backlog and downstream briefing generation.",
+            "summary_seed": (
+                "Provides a practical bridge between a user's reading backlog and downstream briefing generation."
+            ),
         },
         {
             "title_template": "{topic}: highlight-aware summarization from reading history",
@@ -38,7 +39,10 @@ SOURCE_ITEM_TEMPLATES = {
             "days_ago": 9,
             "tags": ["highlight", "knowledge", "agent tools"],
             "angles": ["highlight", "agent tools", "personal knowledge"],
-            "summary_seed": "Useful for turning previously saved material into structured signals instead of starting from raw web crawl.",
+            "summary_seed": (
+                "Useful for turning previously saved material into structured signals"
+                " instead of starting from raw web crawl."
+            ),
         },
     ],
     "inoreader-intelligence-reports": [
@@ -48,7 +52,9 @@ SOURCE_ITEM_TEMPLATES = {
             "days_ago": 3,
             "tags": ["reporting", "rss", "benchmark"],
             "angles": ["reporting", "rss", "analysis"],
-            "summary_seed": "A useful benchmark for briefing UX, scheduling, and report packaging even if it is not agent-first.",
+            "summary_seed": (
+                "A useful benchmark for briefing UX, scheduling, and report packaging even if it is not agent-first."
+            ),
         },
         {
             "title_template": "{topic}: human-first digest design patterns",
@@ -56,7 +62,10 @@ SOURCE_ITEM_TEMPLATES = {
             "days_ago": 12,
             "tags": ["digest", "ux", "curation"],
             "angles": ["digest", "curation", "reader"],
-            "summary_seed": "Helps compare where current human-focused products stop and where agent-friendly pipelines should begin.",
+            "summary_seed": (
+                "Helps compare where current human-focused products stop"
+                " and where agent-friendly pipelines should begin."
+            ),
         },
     ],
 }

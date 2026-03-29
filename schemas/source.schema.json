@@ -40,7 +40,7 @@
       "minItems": 1,
       "items": {
         "type": "string",
-        "enum": ["rss", "api", "cli", "mcp", "web", "email"]
+        "enum": ["rss", "api", "cli", "mcp", "skills", "web", "email"]
       }
     },
     "content_types": {
