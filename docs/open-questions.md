@@ -5,7 +5,7 @@
 ## 产品问题
 
 1. News Report 的核心用户是谁
-   是个人 Agent 开发者、AI Reader 产品团队，还是重度信息消费者？
+   既可以是用户 Agent 开发者，也可以直接面向信息消费者
 
 2. Phase 2 的首要价值是什么
    是“更好的 source access”，还是“更好的 briefing generation”？

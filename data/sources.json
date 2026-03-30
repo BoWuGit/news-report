@@ -1,23 +1,5 @@
 [
   {
-    "id": "folo",
-    "name": "Folo",
-    "url": "https://folo.is/",
-    "category": "ai_reader",
-    "interface_types": ["web", "rss"],
-    "content_types": ["rss", "article", "summary"],
-    "open_source": false,
-    "agent_friendly": "medium",
-    "stage": "active",
-    "pricing": "unknown",
-    "summary": "AI RSS reader in the RSSHub ecosystem for personalized feed consumption.",
-    "notes": [
-      "Useful reference for the reader layer adjacent to News Report.",
-      "Closer to end-user reading experience than agent middleware."
-    ],
-    "last_verified": "2026-03-30"
-  },
-  {
     "id": "inoreader-intelligence-reports",
     "name": "Inoreader Intelligence Reports",
     "url": "https://www.inoreader.com/blog/2026/03/automated-intelligence-reports-for-insights-delivered-to-you.html",

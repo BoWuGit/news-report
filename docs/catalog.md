@@ -32,22 +32,6 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - note: Strong bridge between personal knowledge workflows and agent automation.
 - note: Depends on the user's upstream Readwise usage.
 
-## ai_reader
-
-### Folo
-
-- id: `folo`
-- url: https://folo.is/
-- interfaces: `web`, `rss`
-- content types: `rss`, `article`, `summary`
-- open source: `no`
-- agent friendly: `medium`
-- pricing: `unknown`
-- stage: `active`
-- summary: AI RSS reader in the RSSHub ecosystem for personalized feed consumption.
-- note: Useful reference for the reader layer adjacent to News Report.
-- note: Closer to end-user reading experience than agent middleware.
-
 ## open_source_project
 
 ### RSSHub

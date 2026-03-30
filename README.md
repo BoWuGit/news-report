@@ -7,7 +7,7 @@
 ## 核心定位
 
 ```text
-用户 Agent / AI Reader
+用户 Agent
         |
         v
 News Report（信息处理中间件）
@@ -57,7 +57,6 @@ RSS / API / Newsletter / Podcast / Social / Read-later
 |------|------|
 | [Inoreader Intelligence Reports](https://www.inoreader.com/blog/2026/03/automated-intelligence-reports-for-insights-delivered-to-you.html) | RSS 阅读器，支持自动化智能报告 |
 | [Readwise CLI](https://x.com/readwise/status/2034302848805241282) | 阅读高亮和文章的 CLI 工具，支持 Agent 接入 |
-| [Folo](https://folo.is/) | RSSHub 配套的 AI RSS 阅读器 |
 
 ### [Agent Skills](https://agentskills.io) / CLI 工具
 
@@ -99,7 +98,6 @@ uv run pytest
 
 - 前序文章：[阅读产品在AI时代的想象力](https://mp.weixin.qq.com/s/sSP9j-qLZQBJiyLSrCYzWQ)
 - 感谢 [One2X](https://one2x.ai) 冠哥之前的产品思考对项目的启发
-- [OpenClaw](https://github.com/openclaw/openclaw) · [RSSHub](https://rsshub.app/) · [mcp.so](https://mcp.so/)
 
 ## License
 
