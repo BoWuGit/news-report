@@ -78,13 +78,13 @@ def compute_score(
     topics = normalize_terms(request["topics"])
     preferences = normalize_terms(profile["explicit_preferences"])
     blocked = normalize_terms(profile["blocked_topics"])
-    tags = normalize_terms(candidate["tags"] + candidate["angles"] + [candidate["content_type"]])
+    candidate_terms = normalize_terms(candidate["tags"] + candidate["angles"] + [candidate["content_type"]])
 
-    if any(blocked_term and blocked_term in " ".join(tags + topics) for blocked_term in blocked):
+    if any(blocked_term and blocked_term in " ".join(candidate_terms) for blocked_term in blocked):
         return -1.0, {}
 
     topic_match = 1.0 if any(topic in candidate["title"].lower() for topic in topics) else 0.4
-    preference_overlap = len(set(preferences) & set(tags))
+    preference_overlap = len(set(preferences) & set(candidate_terms))
     preference_match = min(1.0, preference_overlap / max(1, len(preferences)))
 
     age_days = max(0, (datetime.now(UTC) - candidate["published_at"]).days)

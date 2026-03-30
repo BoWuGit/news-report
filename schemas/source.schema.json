@@ -33,7 +33,14 @@
     },
     "category": {
       "type": "string",
-      "enum": ["saas_source_service", "agent_tool", "processing_tool", "source_registry"]
+      "enum": [
+        "saas_source_service",
+        "agent_tool",
+        "processing_tool",
+        "source_registry",
+        "open_source_project",
+        "ai_reader"
+      ]
     },
     "interface_types": {
       "type": "array",

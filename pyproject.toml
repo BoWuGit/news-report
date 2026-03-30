@@ -1,3 +1,7 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
 [project]
 name = "news-report"
 version = "0.1.0"
@@ -8,8 +12,8 @@ license = "MIT"
 dependencies = []
 
 [project.scripts]
-build-catalog = "scripts.build_catalog:main"
-generate-briefing = "scripts.generate_briefing:main"
+build-catalog = "news_report.cli:build_catalog_cli"
+generate-briefing = "news_report.cli:generate_briefing_cli"
 
 [dependency-groups]
 dev = [

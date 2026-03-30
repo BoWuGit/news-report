@@ -59,6 +59,16 @@ class BriefingTests(unittest.TestCase):
         blocked_ids = {item["id"] for item in briefing["items"]}
         self.assertNotIn("podwise-cli-ai-podcast", blocked_ids)
 
+    def test_blocked_topics_do_not_filter_requested_topics_by_name(self) -> None:
+        blocked_request = dict(self.request)
+        blocked_request["topics"] = ["AI"]
+        blocked_request["sources"] = ["podwise-cli", "readwise-cli"]
+        blocked_request["user_profile"] = dict(self.request["user_profile"])
+        blocked_request["user_profile"]["blocked_topics"] = ["AI"]
+        briefing = generate_briefing(blocked_request, self.sources)
+        self.assertGreater(briefing["coverage"]["generated_candidates"], 0)
+        self.assertGreater(len(briefing["items"]), 0)
+
 
 if __name__ == "__main__":
     unittest.main()
