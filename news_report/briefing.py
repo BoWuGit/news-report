@@ -1,66 +1,41 @@
 from __future__ import annotations
 
+import json
+import logging
 from datetime import UTC, datetime
+from pathlib import Path
 
-from news_report.mock_adapters import build_adapter_registry
+import jsonschema
+
+from news_report.adapters import build_adapter_registry
+from news_report.cache import cache_key, cache_read, cache_write
+
+logger = logging.getLogger(__name__)
 
 ALLOWED_SUMMARY_STYLES = {"headline_only", "concise", "detailed"}
+
+_SCHEMAS_DIR = Path(__file__).resolve().parent.parent / "schemas"
+
+
+def _load_schema(name: str) -> dict:
+    path = _SCHEMAS_DIR / name
+    with path.open("r", encoding="utf-8") as fh:
+        return json.load(fh)
+
+
 AGENT_FRIENDLY_WEIGHT = {"low": 0.2, "medium": 0.6, "high": 1.0}
 INTERFACE_WEIGHT = {"web": 0.2, "rss": 0.5, "api": 0.8, "cli": 0.85, "mcp": 1.0, "email": 0.3}
 
 
 def validate_request(request: object) -> dict:
+    """Validate a briefing request against the JSON Schema."""
     if not isinstance(request, dict):
         raise ValueError("Request must be a JSON object")
-
-    required = {"topics", "sources", "language", "max_items", "summary_style", "user_profile"}
-    missing = required - set(request.keys())
-    if missing:
-        raise ValueError(f"Missing request fields: {', '.join(sorted(missing))}")
-
-    if (
-        not isinstance(request["topics"], list)
-        or not request["topics"]
-        or not all(isinstance(item, str) and item.strip() for item in request["topics"])
-    ):
-        raise ValueError("topics must be a non-empty array of strings")
-
-    if (
-        not isinstance(request["sources"], list)
-        or not request["sources"]
-        or not all(isinstance(item, str) and item.strip() for item in request["sources"])
-    ):
-        raise ValueError("sources must be a non-empty array of strings")
-
-    if not isinstance(request["language"], str) or len(request["language"].strip()) < 2:
-        raise ValueError("language must be a non-empty string")
-
-    if not isinstance(request["max_items"], int) or not 1 <= request["max_items"] <= 100:
-        raise ValueError("max_items must be an integer between 1 and 100")
-
-    if request["summary_style"] not in ALLOWED_SUMMARY_STYLES:
-        raise ValueError(f"summary_style must be one of: {', '.join(sorted(ALLOWED_SUMMARY_STYLES))}")
-
-    profile = request["user_profile"]
-    if not isinstance(profile, dict):
-        raise ValueError("user_profile must be an object")
-
-    profile_required = {"explicit_preferences", "blocked_topics", "time_decay_days", "diversity_floor"}
-    missing_profile = profile_required - set(profile.keys())
-    if missing_profile:
-        raise ValueError(f"Missing user_profile fields: {', '.join(sorted(missing_profile))}")
-
-    for key in ("explicit_preferences", "blocked_topics"):
-        if not isinstance(profile[key], list) or not all(isinstance(item, str) for item in profile[key]):
-            raise ValueError(f"{key} must be an array of strings")
-
-    if not isinstance(profile["time_decay_days"], int) or not 1 <= profile["time_decay_days"] <= 365:
-        raise ValueError("time_decay_days must be an integer between 1 and 365")
-
-    diversity_floor = profile["diversity_floor"]
-    if not isinstance(diversity_floor, (int, float)) or not 0 <= diversity_floor <= 1:
-        raise ValueError("diversity_floor must be a number between 0 and 1")
-
+    try:
+        schema = _load_schema("briefing-request.schema.json")
+        jsonschema.validate(instance=request, schema=schema)
+    except jsonschema.ValidationError as exc:
+        raise ValueError(f"Invalid request: {exc.message}") from exc
     return request
 
 
@@ -151,7 +126,14 @@ def format_why(candidate: dict, request: dict, breakdown: dict) -> str:
     return "; ".join(reasons)
 
 
-def generate_briefing(request: dict, sources: list[dict]) -> dict:
+def generate_briefing(request: dict, sources: list[dict], *, use_cache: bool = True) -> dict:
+    # --- cache check ---
+    key = cache_key(request)
+    if use_cache:
+        cached = cache_read(key)
+        if cached is not None:
+            return cached
+
     source_index = {source["id"]: source for source in sources}
     selected_sources = [source_index[source_id] for source_id in request["sources"] if source_id in source_index]
     if not selected_sources:
@@ -195,7 +177,7 @@ def generate_briefing(request: dict, sources: list[dict]) -> dict:
         float(request["user_profile"]["diversity_floor"]),
     )
 
-    return {
+    briefing = {
         "generated_at": now.isoformat().replace("+00:00", "Z"),
         "query": {
             "topics": request["topics"],
@@ -212,3 +194,9 @@ def generate_briefing(request: dict, sources: list[dict]) -> dict:
             "returned_items": len(items),
         },
     }
+
+    # --- cache write ---
+    if use_cache:
+        cache_write(key, briefing)
+
+    return briefing

@@ -9,7 +9,11 @@ description = "News Report For User Agent — Agent-oriented information process
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-dependencies = []
+dependencies = [
+    "httpx>=0.27",
+    "feedparser>=6.0",
+    "jsonschema>=4.20",
+]
 
 [project.scripts]
 build-catalog = "news_report.cli:build_catalog_cli"
