@@ -1,3 +1,5 @@
+"""Static/mock source adapter backed by local templates."""
+
 from __future__ import annotations
 
 from copy import deepcopy
@@ -87,8 +89,9 @@ def pick_summary(template: dict, summary_style: str, topic: str, source_name: st
 class StaticSourceAdapter:
     """Simple source adapter backed by local templates."""
 
-    def __init__(self, source: dict):
+    def __init__(self, source: dict) -> None:
         self.source = source
+        self.source_id: str = source["id"]
 
     def fetch(self, topic: str, summary_style: str, now: datetime | None = None) -> list[dict]:
         now = now or datetime.now(UTC)
@@ -114,6 +117,6 @@ class StaticSourceAdapter:
             )
         return candidates
 
-
-def build_adapter_registry(sources: list[dict]) -> dict[str, StaticSourceAdapter]:
-    return {source["id"]: StaticSourceAdapter(source) for source in sources}
+    def ping(self) -> bool:
+        """Mock adapter is always reachable."""
+        return True
