@@ -13,11 +13,13 @@ dependencies = [
     "httpx>=0.27",
     "feedparser>=6.0",
     "jsonschema>=4.20",
+    "mcp>=1.0",
 ]
 
 [project.scripts]
 build-catalog = "news_report.cli:build_catalog_cli"
 generate-briefing = "news_report.cli:generate_briefing_cli"
+news-report-mcp = "news_report.mcp_server:main"
 
 [dependency-groups]
 dev = [
@@ -41,6 +43,10 @@ select = [
     "SIM",  # flake8-simplify
     "RUF",  # ruff-specific rules
 ]
+
+[tool.ruff.lint.per-file-ignores]
+# MCP tool docstrings are intentionally in Chinese (LLM-facing, target audience)
+"news_report/mcp_server.py" = ["RUF001", "RUF002", "RUF003"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["news_report"]
