@@ -63,6 +63,8 @@ RSS / API / Newsletter / Podcast / Social / Read-later
 | 工具 | 说明 |
 |------|------|
 | [Podwise CLI](https://github.com/hardhackerlabs/podwise-cli) | 播客转录总结，支持 MCP Server 和 [Agent Skills](https://agentskills.io) |
+| [TransCrab](https://github.com/onevcat/transcrab) | OpenClaw-first 翻译管线，将链接转为精美的翻译阅读页 |
+| [baoyu-youtube-transcript](https://github.com/jimliu/baoyu-skills) | YouTube 视频字幕下载，支持多语言、章节和说话人识别 |
 | [RSSHub](https://github.com/DIYgod/RSSHub) | 万物皆可 RSS，42k+ Stars |
 
 完整资源目录见 [docs/catalog.md](docs/catalog.md)，源数据见 [data/sources.json](data/sources.json)。

@@ -244,6 +244,42 @@
     "last_verified": "2026-03-28"
   },
   {
+    "id": "transcrab",
+    "name": "TransCrab",
+    "url": "https://github.com/onevcat/transcrab",
+    "category": "agent_tool",
+    "interface_types": ["cli", "skills"],
+    "content_types": ["article", "translation"],
+    "open_source": true,
+    "agent_friendly": "high",
+    "stage": "active",
+    "pricing": "free",
+    "summary": "OpenClaw-first translation pipeline, turns a link into a polished translated reading page.",
+    "notes": [
+      "Fetch → extract → translate → deploy as static site.",
+      "Good reference for content transformation and agent-driven publishing."
+    ],
+    "last_verified": "2026-04-02"
+  },
+  {
+    "id": "baoyu-youtube-transcript",
+    "name": "baoyu-youtube-transcript",
+    "url": "https://github.com/jimliu/baoyu-skills",
+    "category": "agent_tool",
+    "interface_types": ["cli", "skills"],
+    "content_types": ["transcript", "video"],
+    "open_source": true,
+    "agent_friendly": "high",
+    "stage": "active",
+    "pricing": "free",
+    "summary": "Download YouTube video transcripts/subtitles with multi-language, chapters, and speaker identification support.",
+    "notes": [
+      "Part of baoyu-skills. Supports caching, SRT output, and translation.",
+      "Useful for turning video content into structured text for briefing generation."
+    ],
+    "last_verified": "2026-04-02"
+  },
+  {
     "id": "n8n-rss",
     "name": "n8n RSS Trigger",
     "url": "https://n8n.io/",
