@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0.0] - 2026-04-03
+
+### Added
+- **MCP Server**: Briefing pipeline exposed as MCP tools (`generate_briefing`, `list_sources`, `check_source_health`) and resources (sources catalog, request schema) via FastMCP, with `news-report-mcp` entry point for stdio transport
+- **8 MCP tests**: Coverage for all tools and resources
+
+### Fixed
+- `list_sources_tool` now returns `summary` field (was incorrectly referencing `description`)
+- `check_source_health_tool` gracefully handles missing adapters instead of crashing
+- Path resolution for `data/` and `schemas/` now works both from repo checkout and pip install
+
+### Changed
+- `catalog.py`, `briefing.py`, `mcp_server.py` use unified `_resolve_dir()` for path resolution
+- `pyproject.toml` includes `data/` and `schemas/` in wheel via hatchling `force-include`
+
 ## [0.2.0.0] - 2026-03-31
 
 ### Added
