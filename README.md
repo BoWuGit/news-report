@@ -99,6 +99,7 @@ uv run pytest
 ## 参考引用
 
 - 前序文章：[阅读产品在AI时代的想象力](https://mp.weixin.qq.com/s/sSP9j-qLZQBJiyLSrCYzWQ)
+- [Karpathy: LLM Knowledge Bases](https://x.com/karpathy/status/2039805659525644595) — 用 LLM 构建个人知识库的完整工作流，与本项目方向高度吻合
 - 感谢 [One2X](https://one2x.ai) 冠哥之前的产品思考对项目的启发
 
 ## License
