@@ -1,4 +1,6 @@
-.claude/
+# .claude — track skills (for team sharing), ignore everything else
+.claude/*
+!.claude/skills/
 .history/
 .DS_Store
 node_modules/
