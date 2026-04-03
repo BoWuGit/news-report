@@ -20,8 +20,18 @@ mcp = FastMCP(
     instructions=("面向用户 Agent 的新闻简报工具。提供信息源发现、健康检查和个性化简报生成。"),
 )
 
-_DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-_SCHEMAS_DIR = Path(__file__).resolve().parent.parent / "schemas"
+
+def _resolve_dir(name: str) -> Path:
+    """Resolve data/schemas dir: repo root first, then inside the installed package."""
+    pkg = Path(__file__).resolve().parent
+    repo = pkg.parent / name
+    if repo.is_dir():
+        return repo
+    return pkg / name
+
+
+_DATA_DIR = _resolve_dir("data")
+_SCHEMAS_DIR = _resolve_dir("schemas")
 
 
 # ---------------------------------------------------------------------------
@@ -106,7 +116,7 @@ def list_sources_tool() -> str:
                 "category": s["category"],
                 "interface_types": s["interface_types"],
                 "agent_friendly": s["agent_friendly"],
-                "description": s.get("description", ""),
+                "summary": s.get("summary", ""),
             }
         )
     return json.dumps(summary, ensure_ascii=False, indent=2)
@@ -132,7 +142,10 @@ def check_source_health_tool(source_ids: list[str] | None = None) -> str:
     results = []
     for s in selected:
         sid = s["id"]
-        adapter = registry[sid]
+        adapter = registry.get(sid)
+        if adapter is None:
+            results.append({"source_id": sid, "name": s["name"], "adapter": "none", "status": "no_adapter"})
+            continue
         ok = adapter.ping()
         results.append(
             {

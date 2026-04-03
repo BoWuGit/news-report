@@ -14,7 +14,17 @@ logger = logging.getLogger(__name__)
 
 ALLOWED_SUMMARY_STYLES = {"headline_only", "concise", "detailed"}
 
-_SCHEMAS_DIR = Path(__file__).resolve().parent.parent / "schemas"
+
+def _resolve_dir(name: str) -> Path:
+    """Resolve data/schemas dir: repo root first, then inside the installed package."""
+    pkg = Path(__file__).resolve().parent
+    repo = pkg.parent / name
+    if repo.is_dir():
+        return repo
+    return pkg / name
+
+
+_SCHEMAS_DIR = _resolve_dir("schemas")
 
 
 def _load_schema(name: str) -> dict:

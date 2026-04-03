@@ -28,6 +28,10 @@ dev = [
     "ruff>=0.11",
 ]
 
+[tool.hatch.build.targets.wheel.force-include]
+"data" = "news_report/data"
+"schemas" = "news_report/schemas"
+
 [tool.ruff]
 target-version = "py311"
 line-length = 120
