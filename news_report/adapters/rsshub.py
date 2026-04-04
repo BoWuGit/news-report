@@ -35,6 +35,13 @@ def _rsshub_base_url() -> str:
     return os.environ.get("RSSHUB_BASE_URL", "https://rsshub.app").rstrip("/")
 
 
+def _httpx_client() -> httpx.Client:
+    return httpx.Client(
+        timeout=httpx.Timeout(connect=5.0, read=10.0, write=5.0, pool=5.0),
+        follow_redirects=True,
+    )
+
+
 def _parse_published(entry: dict) -> datetime:
     """Best-effort extraction of a publish datetime from a feedparser entry."""
     for field in ("published_parsed", "updated_parsed"):
@@ -60,10 +67,6 @@ class RSSHubAdapter:
         self.source = source
         self.source_id: str = source["id"]
         self._base_url = _rsshub_base_url()
-        self._client = httpx.Client(
-            timeout=httpx.Timeout(connect=5.0, read=10.0, write=5.0, pool=5.0),
-            follow_redirects=True,
-        )
 
     # --------------------------------------------------------------------- #
     # SourceAdapter protocol
@@ -87,7 +90,8 @@ class RSSHubAdapter:
     def ping(self) -> bool:
         """Check if the RSSHub instance is reachable."""
         try:
-            resp = self._client.get(self._base_url, timeout=5.0)
+            with _httpx_client() as client:
+                resp = client.get(self._base_url, timeout=5.0)
             return resp.status_code < 500
         except Exception:
             return False
@@ -100,10 +104,12 @@ class RSSHubAdapter:
         url = f"{self._base_url}{route}"
         logger.info("Fetching RSSHub route %s for topic %r", route, topic)
 
-        resp = self._client.get(url)
-        resp.raise_for_status()
+        with _httpx_client() as client:
+            resp = client.get(url)
+            resp.raise_for_status()
+            body = resp.text
 
-        feed = feedparser.parse(resp.text)
+        feed = feedparser.parse(body)
         candidates: list[dict] = []
 
         for entry in feed.entries:
@@ -119,6 +125,8 @@ class RSSHubAdapter:
                 summary_text = title
             elif summary_style == "concise" and len(summary_text) > 300:
                 summary_text = summary_text[:297] + "..."
+            elif summary_style == "detailed" and len(summary_text) > 4000:
+                summary_text = summary_text[:3997] + "..."
 
             candidates.append(
                 {
@@ -137,12 +145,6 @@ class RSSHubAdapter:
             )
 
         return candidates
-
-    def __del__(self) -> None:
-        import contextlib
-
-        with contextlib.suppress(Exception):
-            self._client.close()
 
 
 def _extract_tags(entry: dict, topic: str) -> list[str]:

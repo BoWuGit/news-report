@@ -50,6 +50,10 @@ def cache_read(key: str) -> dict | None:
     stored_at = data.get("_cached_at", 0)
     if time.time() - stored_at > _ttl():
         logger.info("Cache expired for key %s", key[:12])
+        import contextlib
+
+        with contextlib.suppress(OSError):
+            path.unlink(missing_ok=True)
         return None
 
     data.pop("_cached_at", None)

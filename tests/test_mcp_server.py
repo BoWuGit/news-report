@@ -4,6 +4,7 @@ import json
 import unittest
 
 from news_report.mcp_server import (
+    DEFAULT_MCP_BRIEFING_SOURCES,
     check_source_health_tool,
     generate_briefing_tool,
     list_sources_tool,
@@ -44,11 +45,16 @@ class MCPToolTests(unittest.TestCase):
         self.assertIsInstance(result, str)
         self.assertTrue(result.startswith("# News Briefing"))
 
-    def test_generate_briefing_defaults_all_sources(self) -> None:
+    def test_generate_briefing_defaults_curated_sources(self) -> None:
         result = generate_briefing_tool(topics=["AI"], max_items=2)
         briefing = json.loads(result)
         self.assertIn("coverage", briefing)
-        self.assertGreater(briefing["coverage"]["matched_sources"], 0)
+        self.assertEqual(briefing["coverage"]["matched_sources"], len(DEFAULT_MCP_BRIEFING_SOURCES))
+        self.assertEqual(briefing["coverage"]["requested_sources"], len(DEFAULT_MCP_BRIEFING_SOURCES))
+
+    def test_generate_briefing_invalid_output_format_raises(self) -> None:
+        with self.assertRaisesRegex(ValueError, "output_format"):
+            generate_briefing_tool(topics=["AI"], sources=["podwise-cli"], output_format="yaml")
 
     def test_check_source_health_all(self) -> None:
         result = check_source_health_tool()

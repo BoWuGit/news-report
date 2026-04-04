@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import unittest
 
-from news_report.briefing import validate_request
+from news_report.briefing import validate_briefing_response, validate_request
 from news_report.catalog import load_sources, validate_sources
 
 
@@ -49,6 +49,48 @@ class RequestSchemaTests(unittest.TestCase):
     def test_non_dict_raises(self) -> None:
         with self.assertRaises(ValueError):
             validate_request([1, 2, 3])
+
+
+class BriefingResponseSchemaTests(unittest.TestCase):
+    def test_minimal_valid_briefing_passes(self) -> None:
+        briefing = {
+            "generated_at": "2026-01-01T00:00:00Z",
+            "query": {
+                "topics": ["AI"],
+                "sources": ["podwise-cli"],
+                "language": "en",
+                "max_items": 5,
+                "summary_style": "concise",
+            },
+            "items": [
+                {
+                    "id": "x",
+                    "title": "T",
+                    "source": "podwise-cli",
+                    "content_type": "article",
+                    "url": "https://example.com/",
+                    "published_at": "2026-01-01T00:00:00Z",
+                    "summary": "S",
+                    "why_it_matters": "W",
+                    "score": 0.5,
+                    "score_breakdown": {
+                        "source_quality": 0.1,
+                        "topic_match": 0.2,
+                        "preference_match": 0.3,
+                        "freshness": 0.4,
+                        "diversity": 0.5,
+                    },
+                    "tags": ["a"],
+                }
+            ],
+            "coverage": {
+                "requested_sources": 1,
+                "matched_sources": 1,
+                "generated_candidates": 1,
+                "returned_items": 1,
+            },
+        }
+        validate_briefing_response(briefing)
 
 
 class SourceSchemaTests(unittest.TestCase):

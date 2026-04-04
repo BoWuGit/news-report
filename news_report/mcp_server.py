@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import json
 import logging
-from pathlib import Path
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
@@ -12,8 +11,16 @@ from mcp.server.fastmcp import FastMCP
 from news_report.briefing import generate_briefing, validate_request
 from news_report.catalog import load_sources, validate_sources
 from news_report.formatter import format_briefing_markdown
+from news_report.paths import resolve_package_adjacent_dir
 
 logger = logging.getLogger(__name__)
+
+# Default when *sources* is omitted: fast, mostly mock adapters — avoids N×M network fetches.
+DEFAULT_MCP_BRIEFING_SOURCES: tuple[str, ...] = (
+    "podwise-cli",
+    "readwise-cli",
+    "inoreader-intelligence-reports",
+)
 
 mcp = FastMCP(
     "news-report",
@@ -21,17 +28,8 @@ mcp = FastMCP(
 )
 
 
-def _resolve_dir(name: str) -> Path:
-    """Resolve data/schemas dir: repo root first, then inside the installed package."""
-    pkg = Path(__file__).resolve().parent
-    repo = pkg.parent / name
-    if repo.is_dir():
-        return repo
-    return pkg / name
-
-
-_DATA_DIR = _resolve_dir("data")
-_SCHEMAS_DIR = _resolve_dir("schemas")
+_DATA_DIR = resolve_package_adjacent_dir("data")
+_SCHEMAS_DIR = resolve_package_adjacent_dir("schemas")
 
 
 # ---------------------------------------------------------------------------
@@ -59,7 +57,7 @@ def generate_briefing_tool(
 
     Args:
         topics: 感兴趣的主题列表，如 ["AI", "open source"]
-        sources: 要查询的信息源 ID 列表。传 None 则使用全部可用源。
+        sources: 要查询的信息源 ID 列表。传 None 则使用少量默认源（本地/mock 为主，避免隐式全量外呼）。
         language: 输出语言，默认 zh-CN
         max_items: 最多返回条目数，默认 10
         summary_style: 摘要风格 (headline_only / concise / detailed)
@@ -67,7 +65,7 @@ def generate_briefing_tool(
         blocked_topics: 需要屏蔽的主题
         time_decay_days: 时效衰减天数，默认 30
         diversity_floor: 多样性下限 (0-1)，默认 0.2
-        output_format: 输出格式 (json / markdown)
+        output_format: 输出格式，仅支持 json 或 markdown（大小写不敏感）
 
     Returns:
         简报内容（JSON 字符串或 Markdown）
@@ -75,7 +73,11 @@ def generate_briefing_tool(
     all_sources = validate_sources(load_sources())
 
     if sources is None:
-        sources = [s["id"] for s in all_sources]
+        sources = list(DEFAULT_MCP_BRIEFING_SOURCES)
+
+    fmt = (output_format or "json").strip().lower()
+    if fmt not in {"json", "markdown"}:
+        raise ValueError("output_format must be 'json' or 'markdown'")
 
     request: dict[str, Any] = {
         "topics": topics,
@@ -94,7 +96,7 @@ def generate_briefing_tool(
     validated = validate_request(request)
     briefing = generate_briefing(validated, all_sources)
 
-    if output_format == "markdown":
+    if fmt == "markdown":
         return format_briefing_markdown(briefing)
     return json.dumps(briefing, ensure_ascii=False, indent=2)
 

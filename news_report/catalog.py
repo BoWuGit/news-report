@@ -5,18 +5,10 @@ from pathlib import Path
 
 import jsonschema
 
+from news_report.paths import resolve_package_adjacent_dir
 
-def _resolve_dir(name: str) -> Path:
-    """Resolve data/schemas dir: repo root first, then inside the installed package."""
-    pkg = Path(__file__).resolve().parent
-    repo = pkg.parent / name
-    if repo.is_dir():
-        return repo
-    return pkg / name
-
-
-SOURCES_PATH = _resolve_dir("data") / "sources.json"
-SCHEMAS_DIR = _resolve_dir("schemas")
+SOURCES_PATH = resolve_package_adjacent_dir("data") / "sources.json"
+SCHEMAS_DIR = resolve_package_adjacent_dir("schemas")
 
 
 def load_json(path: Path) -> object:

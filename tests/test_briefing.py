@@ -2,8 +2,20 @@ from __future__ import annotations
 
 import unittest
 
-from news_report.briefing import generate_briefing, validate_request
+from news_report.briefing import _blocked_term_matches, generate_briefing, validate_request
 from news_report.catalog import load_sources, validate_sources
+
+
+class BlockedTermMatchingTests(unittest.TestCase):
+    def test_substring_ai_in_pain_is_not_blocked(self) -> None:
+        self.assertFalse(_blocked_term_matches("pain suffers headline", "ai"))
+
+    def test_whole_word_ai_matches(self) -> None:
+        self.assertTrue(_blocked_term_matches("ai ethics open source", "ai"))
+
+    def test_multiword_phrase(self) -> None:
+        self.assertTrue(_blocked_term_matches("foo crypto trading bar", "crypto trading"))
+        self.assertFalse(_blocked_term_matches("foo cryptography bar", "crypto trading"))
 
 
 class BriefingTests(unittest.TestCase):

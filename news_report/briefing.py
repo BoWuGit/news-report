@@ -2,35 +2,27 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from datetime import UTC, datetime
-from pathlib import Path
 
 import jsonschema
 
 from news_report.adapters import build_adapter_registry
 from news_report.cache import cache_key, cache_read, cache_write
+from news_report.paths import resolve_package_adjacent_dir
 
 logger = logging.getLogger(__name__)
 
-ALLOWED_SUMMARY_STYLES = {"headline_only", "concise", "detailed"}
-
-
-def _resolve_dir(name: str) -> Path:
-    """Resolve data/schemas dir: repo root first, then inside the installed package."""
-    pkg = Path(__file__).resolve().parent
-    repo = pkg.parent / name
-    if repo.is_dir():
-        return repo
-    return pkg / name
-
-
-_SCHEMAS_DIR = _resolve_dir("schemas")
+_SCHEMAS_DIR = resolve_package_adjacent_dir("schemas")
 
 
 def _load_schema(name: str) -> dict:
     path = _SCHEMAS_DIR / name
-    with path.open("r", encoding="utf-8") as fh:
-        return json.load(fh)
+    try:
+        with path.open("r", encoding="utf-8") as fh:
+            return json.load(fh)
+    except FileNotFoundError as exc:
+        raise ValueError(f"Schema file not found: {path}") from exc
 
 
 AGENT_FRIENDLY_WEIGHT = {"low": 0.2, "medium": 0.6, "high": 1.0}
@@ -49,8 +41,27 @@ def validate_request(request: object) -> dict:
     return request
 
 
+def validate_briefing_response(briefing: object) -> dict:
+    """Validate a briefing dict against the response JSON Schema (optional contract check)."""
+    if not isinstance(briefing, dict):
+        raise ValueError("Briefing must be a JSON object")
+    schema = _load_schema("briefing-response.schema.json")
+    jsonschema.validate(instance=briefing, schema=schema)
+    return briefing
+
+
 def normalize_terms(values: list[str]) -> list[str]:
     return [value.strip().lower() for value in values if value.strip()]
+
+
+def _blocked_term_matches(haystack: str, blocked_term: str) -> bool:
+    """True when *blocked_term* appears as whole word(s), not as an arbitrary substring."""
+    blocked_term = blocked_term.strip().lower()
+    if not blocked_term:
+        return False
+    parts = blocked_term.split()
+    pattern = r"\b" + r"\s+".join(re.escape(p) for p in parts) + r"\b"
+    return re.search(pattern, haystack) is not None
 
 
 def compute_score(
@@ -64,8 +75,9 @@ def compute_score(
     preferences = normalize_terms(profile["explicit_preferences"])
     blocked = normalize_terms(profile["blocked_topics"])
     candidate_terms = normalize_terms(candidate["tags"] + candidate["angles"] + [candidate["content_type"]])
+    haystack = " ".join(candidate_terms)
 
-    if any(blocked_term and blocked_term in " ".join(candidate_terms) for blocked_term in blocked):
+    if any(_blocked_term_matches(haystack, blocked_term) for blocked_term in blocked):
         return -1.0, {}
 
     topic_match = 1.0 if any(topic in candidate["title"].lower() for topic in topics) else 0.4
@@ -81,7 +93,9 @@ def compute_score(
     source_quality += 0.4 * interface_score
 
     diversity_floor = float(profile["diversity_floor"])
-    source_share = source_counts[candidate["source"]] / max(1, len(selected_sources))
+    total_fetched = sum(source_counts.values())
+    total_fetched = max(1, total_fetched)
+    source_share = source_counts.get(candidate["source"], 0) / total_fetched
     diversity = max(diversity_floor, 1 - max(0, source_share - diversity_floor))
 
     score_breakdown = {
@@ -204,6 +218,8 @@ def generate_briefing(request: dict, sources: list[dict], *, use_cache: bool = T
             "returned_items": len(items),
         },
     }
+
+    validate_briefing_response(briefing)
 
     # --- cache write ---
     if use_cache:
