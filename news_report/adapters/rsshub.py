@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+import calendar
 import hashlib
 import logging
 import os
 from datetime import UTC, datetime
-from time import mktime
 
 import feedparser
 import httpx
@@ -48,7 +48,7 @@ def _parse_published(entry: dict) -> datetime:
         parsed = entry.get(field)
         if parsed is not None:
             try:
-                return datetime.fromtimestamp(mktime(parsed), tz=UTC)
+                return datetime.fromtimestamp(calendar.timegm(parsed), tz=UTC)
             except (TypeError, ValueError, OverflowError):
                 continue
     return datetime.now(UTC)

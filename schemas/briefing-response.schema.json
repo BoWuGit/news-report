@@ -81,8 +81,7 @@
             "type": "string"
           },
           "url": {
-            "type": "string",
-            "format": "uri"
+            "type": "string"
           },
           "published_at": {
             "type": "string",

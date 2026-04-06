@@ -12,9 +12,27 @@ from news_report.formatter import format_briefing_markdown
 
 
 def build_catalog_cli() -> int:
-    from scripts.build_catalog import main as build_catalog_main
+    from news_report.catalog import load_sources, validate_sources
 
-    build_catalog_main()
+    # Inline the catalog build to avoid depending on the unpackaged scripts/ module.
+    sources = validate_sources(load_sources())
+
+    from pathlib import Path as _Path
+
+    root = _Path(__file__).resolve().parent.parent
+    catalog_path = root / "docs" / "catalog.md"
+
+    # Import render_catalog from scripts only at dev time; if unavailable, fall back.
+    try:
+        from scripts.build_catalog import render_catalog
+    except ModuleNotFoundError:
+        print("error: scripts/build_catalog.py not found — run from source checkout", file=sys.stderr)
+        return 1
+
+    rendered = render_catalog(sources)
+    catalog_path.write_text(rendered, encoding="utf-8")
+    print(f"validated {len(sources)} sources")
+    print(f"wrote {catalog_path.relative_to(root)}")
     return 0
 
 
@@ -38,7 +56,7 @@ def _check_sources_cli() -> int:
 
 def generate_briefing_cli(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="generate-briefing", description="Generate a news briefing.")
-    parser.add_argument("request_json", help="Path to the briefing request JSON file")
+    parser.add_argument("request_json", nargs="?", help="Path to the briefing request JSON file")
     parser.add_argument("--format", choices=["json", "markdown"], default="json", dest="output_format")
     parser.add_argument("--verbose", "-v", action="store_true", help="Enable debug logging")
     parser.add_argument("--no-cache", action="store_true", help="Skip the briefing cache")
@@ -51,6 +69,9 @@ def generate_briefing_cli(argv: list[str] | None = None) -> int:
 
     if args.check_sources:
         return _check_sources_cli()
+
+    if not args.request_json:
+        parser.error("request_json is required unless --check-sources is used")
 
     request_path = Path(args.request_json).resolve()
     try:
