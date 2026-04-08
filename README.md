@@ -66,6 +66,7 @@ RSS / API / Newsletter / Podcast / Social / Read-later
 | [TransCrab](https://github.com/onevcat/transcrab) | OpenClaw-first 翻译管线，将链接转为精美的翻译阅读页 |
 | [baoyu-youtube-transcript](https://github.com/jimliu/baoyu-skills) | YouTube 视频字幕下载，支持多语言、章节和说话人识别 |
 | [RSSHub](https://github.com/DIYgod/RSSHub) | 万物皆可 RSS，42k+ Stars |
+| [bb-browser](https://github.com/epiral/bb-browser) | 复用真实浏览器登录态的 AI 浏览器工具，可为需要登录的信息源（Twitter、小红书等）提供数据获取能力；其本地浏览历史推荐机制也值得参考 |
 
 完整资源目录见 [docs/catalog.md](docs/catalog.md)，源数据见 [data/sources.json](data/sources.json)。
 
