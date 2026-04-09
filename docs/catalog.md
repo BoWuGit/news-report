@@ -18,6 +18,20 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - note: Part of baoyu-skills. Supports caching, SRT output, and translation.
 - note: Useful for turning video content into structured text for briefing generation.
 
+### MarsWave Skills
+
+- id: `marswave-skills`
+- url: https://github.com/marswaveai/skills
+- interfaces: `cli`, `skills`
+- content types: `podcast`, `article`, `transcript`, `summary`
+- open source: `yes`
+- agent friendly: `high`
+- pricing: `mixed`
+- stage: `active`
+- summary: Collection of AI agent skills for content creation: podcast, explainer video, slides, TTS, content parsing, and multi-skill orchestration.
+- note: Skill-per-directory architecture with structured SKILL.md specs is a good reference for skill design.
+- note: content-parser and creator orchestration patterns relevant to briefing generation pipelines.
+
 ### Podwise CLI
 
 - id: `podwise-cli`

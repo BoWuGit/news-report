@@ -293,5 +293,23 @@
     "summary": "Workflow automation with RSS trigger nodes for feed processing pipelines.",
     "notes": ["Can orchestrate multi-source feed processing. Self-hostable."],
     "last_verified": "2026-03-28"
+  },
+  {
+    "id": "marswave-skills",
+    "name": "MarsWave Skills",
+    "url": "https://github.com/marswaveai/skills",
+    "category": "agent_tool",
+    "interface_types": ["cli", "skills"],
+    "content_types": ["podcast", "article", "transcript", "summary"],
+    "open_source": true,
+    "agent_friendly": "high",
+    "stage": "active",
+    "pricing": "mixed",
+    "summary": "Collection of AI agent skills for content creation: podcast, explainer video, slides, TTS, content parsing, and multi-skill orchestration.",
+    "notes": [
+      "Skill-per-directory architecture with structured SKILL.md specs is a good reference for skill design.",
+      "content-parser and creator orchestration patterns relevant to briefing generation pipelines."
+    ],
+    "last_verified": "2026-04-09"
   }
 ]
