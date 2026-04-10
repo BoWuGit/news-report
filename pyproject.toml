@@ -41,16 +41,20 @@ select = [
     "E",    # pycodestyle errors
     "W",    # pycodestyle warnings
     "F",    # pyflakes
+    "ARG",  # flake8-unused-arguments (unused params / lambda args)
     "I",    # isort
     "UP",   # pyupgrade
     "B",    # flake8-bugbear
     "SIM",  # flake8-simplify
     "RUF",  # ruff-specific rules
+    "PLC0415",  # import-outside-top-level
 ]
 
 [tool.ruff.lint.per-file-ignores]
 # MCP tool docstrings are intentionally in Chinese (LLM-facing, target audience)
 "news_report/mcp_server.py" = ["RUF001", "RUF002", "RUF003"]
+# Scripts need sys.path manipulation before importing project modules
+"scripts/*.py" = ["E402"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["news_report"]

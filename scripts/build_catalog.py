@@ -10,6 +10,8 @@ CATALOG_PATH = ROOT / "docs" / "catalog.md"
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from news_report.catalog import load_sources, validate_sources
+
 
 def render_catalog(sources: list[dict]) -> str:
     lines = [
@@ -56,8 +58,6 @@ def render_catalog(sources: list[dict]) -> str:
 
 
 def main() -> None:
-    from news_report.catalog import load_sources, validate_sources
-
     sources = validate_sources(load_sources())
     rendered = render_catalog(sources)
     CATALOG_PATH.write_text(rendered, encoding="utf-8")

@@ -3,17 +3,16 @@ from __future__ import annotations
 import json
 import logging
 import re
-from datetime import UTC, datetime
+from datetime import datetime, timezone
+from pathlib import Path
 
 import jsonschema
 
 from news_report.adapters import build_adapter_registry
-from news_report.cache import cache_key, cache_read, cache_write
-from news_report.paths import resolve_package_adjacent_dir
 
 logger = logging.getLogger(__name__)
 
-_SCHEMAS_DIR = resolve_package_adjacent_dir("schemas")
+_SCHEMAS_DIR = Path(__file__).resolve().parent.parent / "schemas"
 
 
 def _load_schema(name: str) -> dict:
@@ -67,7 +66,6 @@ def _blocked_term_matches(haystack: str, blocked_term: str) -> bool:
 def compute_score(
     candidate: dict,
     request: dict,
-    selected_sources: list[dict],
     source_counts: dict[str, int],
 ) -> tuple[float, dict]:
     profile = request["user_profile"]
@@ -84,7 +82,7 @@ def compute_score(
     preference_overlap = len(set(preferences) & set(candidate_terms))
     preference_match = min(1.0, preference_overlap / max(1, len(preferences)))
 
-    age_days = max(0, (datetime.now(UTC) - candidate["published_at"]).days)
+    age_days = max(0, (datetime.now(timezone.utc) - candidate["published_at"]).days)
     freshness = max(0.1, 1 - (age_days / max(1, profile["time_decay_days"])))
 
     source = candidate["source_meta"]
@@ -150,24 +148,18 @@ def format_why(candidate: dict, request: dict, breakdown: dict) -> str:
     return "; ".join(reasons)
 
 
-def generate_briefing(request: dict, sources: list[dict], *, use_cache: bool = True) -> dict:
-    # --- cache check ---
-    key = cache_key(request)
-    if use_cache:
-        cached = cache_read(key)
-        if cached is not None:
-            return cached
-
+def generate_briefing(request: dict, sources: list[dict]) -> dict:
     source_index = {source["id"]: source for source in sources}
     selected_sources = [source_index[source_id] for source_id in request["sources"] if source_id in source_index]
     if not selected_sources:
         raise ValueError("No requested sources matched data/sources.json")
 
     registry = build_adapter_registry(selected_sources)
-    now = datetime.now(UTC)
+    now = datetime.now(timezone.utc)
     candidates = []
     source_counts: dict[str, int] = {}
 
+    # TODO (wubo) to optimize concurrently fetching
     for topic in request["topics"]:
         for source in selected_sources:
             fetched = registry[source["id"]].fetch(topic, request["summary_style"], now=now)
@@ -176,7 +168,7 @@ def generate_briefing(request: dict, sources: list[dict], *, use_cache: bool = T
 
     scored_items = []
     for candidate in candidates:
-        score, breakdown = compute_score(candidate, request, selected_sources, source_counts)
+        score, breakdown = compute_score(candidate, request, source_counts)
         if score < 0:
             continue
         scored_items.append(
@@ -220,9 +212,5 @@ def generate_briefing(request: dict, sources: list[dict], *, use_cache: bool = T
     }
 
     validate_briefing_response(briefing)
-
-    # --- cache write ---
-    if use_cache:
-        cache_write(key, briefing)
 
     return briefing

@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import unittest
-from datetime import UTC, datetime
+from datetime import datetime, timezone
+from time import struct_time
 from unittest.mock import MagicMock, patch
 
 from news_report.adapters import SourceAdapter, build_adapter_registry
@@ -87,7 +88,7 @@ class RSSHubAdapterTests(unittest.TestCase):
         mock_fetch.assert_called()
 
     @patch.object(RSSHubAdapter, "_fetch_route", side_effect=Exception("timeout"))
-    def test_fetch_returns_empty_on_failure(self, mock_fetch: MagicMock) -> None:
+    def test_fetch_returns_empty_on_failure(self, _mock_fetch: MagicMock) -> None:
         results = self.adapter.fetch("AI", "concise")
         self.assertEqual(results, [])
 
@@ -103,7 +104,7 @@ class RSSHubAdapterTests(unittest.TestCase):
         self.assertTrue(self.adapter.ping())
 
     @patch("news_report.adapters.rsshub.httpx.Client.get", side_effect=Exception("connection refused"))
-    def test_ping_returns_false_on_error(self, mock_get: MagicMock) -> None:
+    def test_ping_returns_false_on_error(self, _mock_get: MagicMock) -> None:
         self.assertFalse(self.adapter.ping())
 
 
@@ -112,11 +113,9 @@ class ParsePublishedTests(unittest.TestCase):
         entry = {"published_parsed": None}
         result = _parse_published(entry)
         self.assertIsInstance(result, datetime)
-        self.assertEqual(result.tzinfo, UTC)
+        self.assertEqual(result.tzinfo, timezone.utc)
 
     def test_valid_published_parsed(self) -> None:
-        from time import struct_time
-
         # 2026-01-15 12:00:00 UTC as struct_time
         st = struct_time((2026, 1, 15, 12, 0, 0, 2, 15, 0))
         entry = {"published_parsed": st}

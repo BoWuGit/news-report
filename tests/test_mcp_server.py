@@ -5,9 +5,11 @@ import unittest
 
 from news_report.mcp_server import (
     DEFAULT_MCP_BRIEFING_SOURCES,
+    briefing_request_schema_resource,
     check_source_health_tool,
     generate_briefing_tool,
     list_sources_tool,
+    sources_resource,
 )
 
 
@@ -76,16 +78,12 @@ class MCPResourceTests(unittest.TestCase):
     """Test MCP resource functions directly."""
 
     def test_sources_resource(self) -> None:
-        from news_report.mcp_server import sources_resource
-
         result = sources_resource()
         data = json.loads(result)
         self.assertIsInstance(data, list)
         self.assertGreater(len(data), 0)
 
     def test_briefing_request_schema_resource(self) -> None:
-        from news_report.mcp_server import briefing_request_schema_resource
-
         result = briefing_request_schema_resource()
         schema = json.loads(result)
         self.assertEqual(schema["type"], "object")

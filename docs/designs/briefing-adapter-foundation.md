@@ -99,14 +99,6 @@ class SourceAdapter(Protocol):
 - 校验发生在 **输入侧**（request + sources），输出侧暂不校验
 - 依赖：`jsonschema` 库，加入 `pyproject.toml` dependencies
 
-### Briefing 缓存设计
-
-- 文件级缓存，目录：`~/.cache/news-report/`
-- 缓存 key：请求参数 JSON 的 SHA256 hash
-- TTL：15 分钟（可通过环境变量 `NEWS_REPORT_CACHE_TTL` 覆盖）
-- 无大小限制（文件数自然有限）
-- 仅缓存最终 briefing 结果，不缓存中间 adapter 结果
-
 ### Markdown 输出
 
 新增函数 `format_briefing_markdown(briefing: dict) -> str`，独立于 `generate_briefing()`。

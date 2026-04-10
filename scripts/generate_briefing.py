@@ -10,11 +10,11 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from news_report.briefing import generate_briefing, validate_request
+from news_report.catalog import load_json, load_sources, validate_sources
+
 
 def main() -> int:
-    from news_report.briefing import generate_briefing, validate_request
-    from news_report.catalog import load_json, load_sources, validate_sources
-
     if len(sys.argv) != 2:
         print("usage: python3 scripts/generate_briefing.py <request.json>", file=sys.stderr)
         return 1

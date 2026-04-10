@@ -6,28 +6,18 @@ import logging
 import sys
 from pathlib import Path
 
+from news_report.adapters import build_adapter_registry
 from news_report.briefing import generate_briefing, validate_request
 from news_report.catalog import load_json, load_sources, validate_sources
 from news_report.formatter import format_briefing_markdown
+from scripts.build_catalog import render_catalog
 
 
 def build_catalog_cli() -> int:
-    from news_report.catalog import load_sources, validate_sources
-
-    # Inline the catalog build to avoid depending on the unpackaged scripts/ module.
     sources = validate_sources(load_sources())
 
-    from pathlib import Path as _Path
-
-    root = _Path(__file__).resolve().parent.parent
+    root = Path(__file__).resolve().parent.parent
     catalog_path = root / "docs" / "catalog.md"
-
-    # Import render_catalog from scripts only at dev time; if unavailable, fall back.
-    try:
-        from scripts.build_catalog import render_catalog
-    except ModuleNotFoundError:
-        print("error: scripts/build_catalog.py not found — run from source checkout", file=sys.stderr)
-        return 1
 
     rendered = render_catalog(sources)
     catalog_path.write_text(rendered, encoding="utf-8")
@@ -38,7 +28,6 @@ def build_catalog_cli() -> int:
 
 def _check_sources_cli() -> int:
     """Ping every source adapter and report health."""
-    from news_report.adapters import build_adapter_registry
 
     sources = validate_sources(load_sources())
     registry = build_adapter_registry(sources)
@@ -59,7 +48,6 @@ def generate_briefing_cli(argv: list[str] | None = None) -> int:
     parser.add_argument("request_json", nargs="?", help="Path to the briefing request JSON file")
     parser.add_argument("--format", choices=["json", "markdown"], default="json", dest="output_format")
     parser.add_argument("--verbose", "-v", action="store_true", help="Enable debug logging")
-    parser.add_argument("--no-cache", action="store_true", help="Skip the briefing cache")
     parser.add_argument("--check-sources", action="store_true", help="Ping sources and exit")
 
     args = parser.parse_args(argv or sys.argv[1:])
@@ -77,7 +65,7 @@ def generate_briefing_cli(argv: list[str] | None = None) -> int:
     try:
         request = validate_request(load_json(request_path))
         sources = validate_sources(load_sources())
-        briefing = generate_briefing(request, sources, use_cache=not args.no_cache)
+        briefing = generate_briefing(request, sources)
     except Exception as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

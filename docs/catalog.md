@@ -51,7 +51,7 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - id: `readwise-cli`
 - url: https://x.com/readwise/status/2034302848805241282
 - interfaces: `cli`
-- content types: `article`, `highlight`, `read_later`
+- content types: `article`, `highlight`
 - open source: `no`
 - agent friendly: `medium`
 - pricing: `paid`
@@ -140,19 +140,6 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - stage: `active`
 - summary: Technology-focused link aggregation with tag-based RSS feeds.
 - note: High signal-to-noise ratio. Tag-based RSS enables topic-specific feeds.
-
-### Miniflux
-
-- id: `miniflux`
-- url: https://miniflux.app/
-- interfaces: `api`, `web`
-- content types: `rss`, `article`, `feed`
-- open source: `yes`
-- agent friendly: `high`
-- pricing: `free`
-- stage: `active`
-- summary: Minimalist self-hosted RSS reader with a clean REST API.
-- note: REST API makes it ideal for agent integration. Supports feed management + read state.
 
 ### Reddit RSS Feeds
 

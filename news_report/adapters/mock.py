@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 SOURCE_ITEM_TEMPLATES = {
     "podwise-cli": [
@@ -27,7 +27,7 @@ SOURCE_ITEM_TEMPLATES = {
     "readwise-cli": [
         {
             "title_template": "{topic}: saved-reading export for personalized agent memory",
-            "content_type": "read_later",
+            "content_type": "article",
             "days_ago": 1,
             "tags": ["readwise", "memory", "personalization"],
             "angles": ["memory", "highlights", "developer workflows"],
@@ -94,7 +94,7 @@ class StaticSourceAdapter:
         self.source_id: str = source["id"]
 
     def fetch(self, topic: str, summary_style: str, now: datetime | None = None) -> list[dict]:
-        now = now or datetime.now(UTC)
+        now = now or datetime.now(timezone.utc)
         source_url = self.source["url"].rstrip("/")
         candidates = []
         for template in SOURCE_ITEM_TEMPLATES.get(self.source["id"], []):

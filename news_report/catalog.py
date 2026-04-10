@@ -5,10 +5,9 @@ from pathlib import Path
 
 import jsonschema
 
-from news_report.paths import resolve_package_adjacent_dir
-
-SOURCES_PATH = resolve_package_adjacent_dir("data") / "sources.json"
-SCHEMAS_DIR = resolve_package_adjacent_dir("schemas")
+_ROOT = Path(__file__).resolve().parent.parent
+SOURCES_PATH = _ROOT / "data" / "sources.json"
+SCHEMAS_DIR = _ROOT / "schemas"
 
 
 def load_json(path: Path) -> object:

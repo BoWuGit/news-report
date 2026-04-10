@@ -4,14 +4,15 @@ from __future__ import annotations
 
 import json
 import logging
+from pathlib import Path
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
+from news_report.adapters import build_adapter_registry
 from news_report.briefing import generate_briefing, validate_request
 from news_report.catalog import load_sources, validate_sources
 from news_report.formatter import format_briefing_markdown
-from news_report.paths import resolve_package_adjacent_dir
 
 logger = logging.getLogger(__name__)
 
@@ -28,8 +29,9 @@ mcp = FastMCP(
 )
 
 
-_DATA_DIR = resolve_package_adjacent_dir("data")
-_SCHEMAS_DIR = resolve_package_adjacent_dir("schemas")
+_ROOT = Path(__file__).resolve().parent.parent
+_DATA_DIR = _ROOT / "data"
+_SCHEMAS_DIR = _ROOT / "schemas"
 
 
 # ---------------------------------------------------------------------------
@@ -134,8 +136,6 @@ def check_source_health_tool(source_ids: list[str] | None = None) -> str:
     Args:
         source_ids: 要检查的信息源 ID 列表。传 None 则检查全部。
     """
-    from news_report.adapters import build_adapter_registry
-
     all_sources = validate_sources(load_sources())
 
     selected = [s for s in all_sources if s["id"] in source_ids] if source_ids else all_sources

@@ -6,7 +6,7 @@ import calendar
 import hashlib
 import logging
 import os
-from datetime import UTC, datetime
+from datetime import datetime, timezone
 
 import feedparser
 import httpx
@@ -42,16 +42,16 @@ def _httpx_client() -> httpx.Client:
     )
 
 
-def _parse_published(entry: dict) -> datetime:
+def _parse_published(entry: dict, *, fallback: datetime | None = None) -> datetime:
     """Best-effort extraction of a publish datetime from a feedparser entry."""
     for field in ("published_parsed", "updated_parsed"):
         parsed = entry.get(field)
         if parsed is not None:
             try:
-                return datetime.fromtimestamp(calendar.timegm(parsed), tz=UTC)
+                return datetime.fromtimestamp(calendar.timegm(parsed), tz=timezone.utc)
             except (TypeError, ValueError, OverflowError):
                 continue
-    return datetime.now(UTC)
+    return fallback if fallback is not None else datetime.now(timezone.utc)
 
 
 def _entry_id(entry: dict, source_id: str, route: str) -> str:
@@ -74,13 +74,13 @@ class RSSHubAdapter:
 
     def fetch(self, topic: str, summary_style: str, now: datetime | None = None) -> list[dict]:
         """Fetch candidates from RSSHub routes matching *topic*."""
-        now = now or datetime.now(UTC)
+        resolved_now = now or datetime.now(timezone.utc)
         routes = TOPIC_ROUTE_MAP.get(topic.lower(), DEFAULT_ROUTES)
         candidates: list[dict] = []
 
         for route in routes:
             try:
-                items = self._fetch_route(route, topic, summary_style, now)
+                items = self._fetch_route(route, topic, summary_style, resolved_now)
                 candidates.extend(items)
             except Exception:
                 logger.warning("RSSHub fetch failed for route %s, skipping", route, exc_info=True)
@@ -113,7 +113,7 @@ class RSSHubAdapter:
         candidates: list[dict] = []
 
         for entry in feed.entries:
-            published_at = _parse_published(entry)
+            published_at = _parse_published(entry, fallback=now)
 
             title = entry.get("title", "").strip()
             if not title:

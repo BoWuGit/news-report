@@ -6,6 +6,9 @@ import logging
 from datetime import datetime
 from typing import Protocol, runtime_checkable
 
+from news_report.adapters.mock import StaticSourceAdapter
+from news_report.adapters.rsshub import RSSHubAdapter
+
 logger = logging.getLogger(__name__)
 
 
@@ -33,12 +36,7 @@ def _register_builtin_adapters() -> None:
     """Lazily populate ADAPTER_MAP with adapters that ship with news-report."""
     if ADAPTER_MAP:
         return
-    try:
-        from news_report.adapters.rsshub import RSSHubAdapter
-
-        ADAPTER_MAP["rsshub"] = RSSHubAdapter
-    except Exception:
-        logger.debug("RSSHubAdapter unavailable, will use mock fallback")
+    ADAPTER_MAP["rsshub"] = RSSHubAdapter
 
 
 def build_adapter_registry(sources: list[dict]) -> dict[str, SourceAdapter]:
@@ -48,8 +46,6 @@ def build_adapter_registry(sources: list[dict]) -> dict[str, SourceAdapter]:
     as a mock fallback.
     """
     _register_builtin_adapters()
-
-    from news_report.adapters.mock import StaticSourceAdapter
 
     registry: dict[str, SourceAdapter] = {}
     for source in sources:
