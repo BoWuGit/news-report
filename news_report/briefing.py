@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import logging
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import jsonschema
@@ -82,7 +82,7 @@ def compute_score(
     preference_overlap = len(set(preferences) & set(candidate_terms))
     preference_match = min(1.0, preference_overlap / max(1, len(preferences)))
 
-    age_days = max(0, (datetime.now(timezone.utc) - candidate["published_at"]).days)
+    age_days = max(0, (datetime.now(UTC) - candidate["published_at"]).days)
     freshness = max(0.1, 1 - (age_days / max(1, profile["time_decay_days"])))
 
     source = candidate["source_meta"]
@@ -135,7 +135,7 @@ def rerank_with_diversity(scored_items: list[dict], max_items: int, diversity_fl
     return selected
 
 
-def format_why(candidate: dict, request: dict, breakdown: dict) -> str:
+def why_it_matters(candidate: dict, request: dict, breakdown: dict) -> str:
     preferences = normalize_terms(request["user_profile"]["explicit_preferences"])
     matched_preferences = [tag for tag in candidate["tags"] if tag.lower() in preferences]
     reasons = [
@@ -155,7 +155,7 @@ def generate_briefing(request: dict, sources: list[dict]) -> dict:
         raise ValueError("No requested sources matched data/sources.json")
 
     registry = build_adapter_registry(selected_sources)
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     candidates = []
     source_counts: dict[str, int] = {}
 
@@ -180,7 +180,7 @@ def generate_briefing(request: dict, sources: list[dict]) -> dict:
                 "url": candidate["url"],
                 "published_at": candidate["published_at"].isoformat().replace("+00:00", "Z"),
                 "summary": candidate["summary"],
-                "why_it_matters": format_why(candidate, request, breakdown),
+                "why_it_matters": why_it_matters(candidate, request, breakdown),
                 "score": score,
                 "score_breakdown": breakdown,
                 "tags": candidate["tags"],
