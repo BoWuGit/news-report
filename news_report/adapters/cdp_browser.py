@@ -7,6 +7,17 @@ It requires the user to be logged in to the target site in the connected browser
 Usage requires a CDP-compatible tool (e.g., Chrome DevTools MCP, Playwright, or
 bb-browser) to provide the actual browser connection. This adapter defines the
 extraction logic and data normalization.
+
+Architecture note
+-----------------
+This module intentionally does NOT implement the SourceAdapter Protocol.
+CDP-based scraping is interactive (requires a live browser, login detection,
+user intervention) and is driven by the ``scraping-social-timeline`` skill
+rather than a synchronous ``fetch()`` call.  The normalize_* functions here
+serve as the bridge between raw browser output and the candidate dict format
+used by ``generate_briefing()``.  If a unified pipeline that mixes CDP and
+RSS/API sources is needed later, a thin cache-based adapter can read
+pre-scraped results and plug into ``ADAPTER_MAP`` without changing this module.
 """
 
 from __future__ import annotations
