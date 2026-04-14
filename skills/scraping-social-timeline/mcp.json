@@ -1,0 +1,14 @@
+{
+  "chrome-devtools": {
+    "command": "npx",
+    "args": ["chrome-devtools-mcp@latest", "--autoConnect"],
+    "includeTools": [
+      "list_pages",
+      "select_page",
+      "take_snapshot",
+      "evaluate_script",
+      "navigate_page",
+      "new_page"
+    ]
+  }
+}

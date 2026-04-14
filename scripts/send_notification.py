@@ -7,10 +7,11 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+RUNTIME_SRC = ROOT / "packages" / "social_timeline_runtime" / "src"
+if str(RUNTIME_SRC) not in sys.path:
+    sys.path.insert(0, str(RUNTIME_SRC))
 
-from news_report.notifications import send_notification, shell_preview
+from social_timeline_runtime.notifications import send_notification, shell_preview
 
 
 def parse_args() -> argparse.Namespace:
@@ -30,23 +31,11 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     if args.dry_run:
-        print(
-            shell_preview(
-                title=args.title,
-                body=args.body,
-                subtitle=args.subtitle,
-                sound=args.sound,
-            )
-        )
+        print(shell_preview(title=args.title, body=args.body, subtitle=args.subtitle, sound=args.sound))
         return 0
 
     try:
-        send_notification(
-            title=args.title,
-            body=args.body,
-            subtitle=args.subtitle,
-            sound=args.sound,
-        )
+        send_notification(title=args.title, body=args.body, subtitle=args.subtitle, sound=args.sound)
     except Exception as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1

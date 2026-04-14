@@ -90,6 +90,16 @@ uv run scripts/generate_briefing.py examples/briefing-request.json
 uv run pytest
 ```
 
+## Skill Packaging Boundary
+
+社交媒体时间线简报能力正在整理成“可发布 skill + 独立 runtime”的结构：
+
+- 发布版 skill scaffold: [skills/scraping-social-timeline/SKILL.md](skills/scraping-social-timeline/SKILL.md)
+- runtime package scaffold: [packages/social_timeline_runtime/README.md](packages/social_timeline_runtime/README.md)
+- 架构约束说明: [docs/architecture/social-timeline-skill-packaging.md](docs/architecture/social-timeline-skill-packaging.md)
+
+现有 `.agents/skills/` 集成继续保留，直到 runtime CLI 完成迁移并稳定。
+
 ## 前置依赖和假定
 
 - AI 生态的用户 Memory 会越来越成熟

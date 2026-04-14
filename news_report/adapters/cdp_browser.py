@@ -13,11 +13,14 @@ Architecture note
 This module intentionally does NOT implement the SourceAdapter Protocol.
 CDP-based scraping is interactive (requires a live browser, login detection,
 user intervention) and is driven by the ``scraping-social-timeline`` skill
-rather than a synchronous ``fetch()`` call.  The normalize_* functions here
-serve as the bridge between raw browser output and the candidate dict format
-used by ``generate_briefing()``.  If a unified pipeline that mixes CDP and
-RSS/API sources is needed later, a thin cache-based adapter can read
-pre-scraped results and plug into ``ADAPTER_MAP`` without changing this module.
+rather than a synchronous ``fetch()`` call.
+
+Ownership note:
+The long-term owner of this functionality is the standalone
+``social_timeline_runtime`` package under ``packages/``.  This module remains in
+place as the current application-side implementation and as a migration bridge.
+New published-skill work should target the runtime CLI contract first, then
+reuse that runtime from ``news-report`` instead of expanding this file further.
 """
 
 from __future__ import annotations

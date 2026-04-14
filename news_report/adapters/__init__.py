@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
-from typing import Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
-from news_report.adapters.mock import StaticSourceAdapter
-from news_report.adapters.rsshub import RSSHubAdapter
+if TYPE_CHECKING:
+    from news_report.adapters.mock import StaticSourceAdapter as StaticSourceAdapter
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +36,8 @@ def _register_builtin_adapters() -> None:
     """Lazily populate ADAPTER_MAP with adapters that ship with news-report."""
     if ADAPTER_MAP:
         return
+    from news_report.adapters.rsshub import RSSHubAdapter  # noqa: PLC0415
+
     ADAPTER_MAP["rsshub"] = RSSHubAdapter
 
 
@@ -46,6 +48,7 @@ def build_adapter_registry(sources: list[dict]) -> dict[str, SourceAdapter]:
     as a mock fallback.
     """
     _register_builtin_adapters()
+    from news_report.adapters.mock import StaticSourceAdapter  # noqa: PLC0415
 
     registry: dict[str, SourceAdapter] = {}
     for source in sources:

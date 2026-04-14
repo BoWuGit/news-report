@@ -1,0 +1,20 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "social-timeline-runtime"
+version = "0.1.0"
+description = "Runtime package for authenticated social timeline scraping skills"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = [
+    "websocket-client>=1.8",
+]
+
+[project.scripts]
+social-timeline = "social_timeline_runtime.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/social_timeline_runtime"]
