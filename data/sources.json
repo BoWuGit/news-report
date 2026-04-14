@@ -296,5 +296,19 @@
       "content-parser and creator orchestration patterns relevant to briefing generation pipelines."
     ],
     "last_verified": "2026-04-09"
+  },
+  {
+    "id": "matter-cli",
+    "name": "Matter CLI",
+    "url": "https://docs.getmatter.com/cli",
+    "category": "agent_tool",
+    "interface_types": ["cli"],
+    "content_types": ["article", "highlight", "annotation"],
+    "open_source": false,
+    "agent_friendly": "medium",
+    "stage": "active",
+    "pricing": "paid",
+    "summary": "Terminal client for Matter reading libraries with scriptable CLI commands and an interactive TUI.",
+    "last_verified": "2026-04-14"
   }
 ]

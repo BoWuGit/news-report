@@ -32,6 +32,18 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - note: Skill-per-directory architecture with structured SKILL.md specs is a good reference for skill design.
 - note: content-parser and creator orchestration patterns relevant to briefing generation pipelines.
 
+### Matter CLI
+
+- id: `matter-cli`
+- url: https://docs.getmatter.com/cli
+- interfaces: `cli`
+- content types: `article`, `highlight`, `annotation`
+- open source: `no`
+- agent friendly: `medium`
+- pricing: `paid`
+- stage: `active`
+- summary: Terminal client for Matter reading libraries with scriptable CLI commands and an interactive TUI.
+
 ### Podwise CLI
 
 - id: `podwise-cli`
@@ -144,7 +156,7 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 ### Reddit RSS Feeds
 
 - id: `reddit-rss`
-- url: https://www.reddit.com/.rss
+- url: https://www.reddit.com/r/{subreddit}/.rss
 - interfaces: `rss`, `api`
 - content types: `article`, `feed`
 - open source: `no`
@@ -159,7 +171,7 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - id: `rsshub`
 - url: https://github.com/DIYgod/RSSHub
 - interfaces: `rss`, `web`
-- content types: `rss`, `article`, `feed`
+- content types: `feed`, `article`
 - open source: `yes`
 - agent friendly: `high`
 - pricing: `free`
@@ -175,7 +187,7 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - id: `kill-the-newsletter`
 - url: https://kill-the-newsletter.com/
 - interfaces: `rss`, `email`
-- content types: `article`, `rss`
+- content types: `article`, `feed`
 - open source: `yes`
 - agent friendly: `medium`
 - pricing: `free`
@@ -188,7 +200,7 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - id: `n8n-rss`
 - url: https://n8n.io/
 - interfaces: `api`, `web`
-- content types: `rss`, `article`, `feed`
+- content types: `feed`, `article`
 - open source: `yes`
 - agent friendly: `medium`
 - pricing: `mixed`
@@ -203,7 +215,7 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - id: `feedly-api`
 - url: https://developer.feedly.com/
 - interfaces: `api`, `web`
-- content types: `rss`, `article`, `feed`
+- content types: `feed`, `article`
 - open source: `no`
 - agent friendly: `medium`
 - pricing: `paid`
@@ -216,7 +228,7 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - id: `inoreader-intelligence-reports`
 - url: https://www.inoreader.com/blog/2026/03/automated-intelligence-reports-for-insights-delivered-to-you.html
 - interfaces: `web`
-- content types: `rss`, `article`
+- content types: `feed`, `article`
 - open source: `no`
 - agent friendly: `low`
 - pricing: `paid`
@@ -243,7 +255,7 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - id: `tldr-newsletter`
 - url: https://tldr.tech/
 - interfaces: `web`, `email`
-- content types: `article`, `rss`
+- content types: `article`, `feed`
 - open source: `no`
 - agent friendly: `low`
 - pricing: `free`
