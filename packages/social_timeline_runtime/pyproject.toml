@@ -7,7 +7,7 @@ name = "social-timeline-runtime"
 version = "0.1.0"
 description = "Runtime package for authenticated social timeline scraping skills"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 license = "MIT"
 dependencies = [
     "websocket-client>=1.8",
