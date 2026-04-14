@@ -351,7 +351,7 @@ Track the newest post seen on each platform to avoid cross-run duplication, even
 ```json
 {
   "x_last_seen_id": "2043852184329105873",
-  "jike_last_seen_anchor": "ErinCC|公司在虹桥，从中山公园搬到外环外之后"
+  "jike_last_seen_anchor": "ErinCC|公司在虹桥，从中山公园搬到外环外之后，周中的活动范围都在外环"
 }
 ```
 
