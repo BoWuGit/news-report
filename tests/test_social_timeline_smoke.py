@@ -1,21 +1,14 @@
 from __future__ import annotations
 
 import json
-import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-ROOT = Path(__file__).resolve().parent.parent
-RUNTIME_SRC = ROOT / "packages" / "social_timeline_runtime" / "src"
-
-import sys  # noqa: E402
-
-if str(RUNTIME_SRC) not in sys.path:
-    sys.path.insert(0, str(RUNTIME_SRC))
-
-from social_timeline_runtime import cli  # noqa: E402
+from social_timeline_runtime import cli
 
 
 class SocialTimelineSmokeTests(unittest.TestCase):
@@ -53,10 +46,7 @@ class SocialTimelineSmokeTests(unittest.TestCase):
             self.assertEqual(len(raw_payload["items"]), 3)
             self.assertEqual(raw_payload["items"][-1]["url"], "https://x.com/a/status/3")
 
-            env = {**os.environ, "PYTHONPATH": str(RUNTIME_SRC)}
-            result = os.spawnve(
-                os.P_WAIT,
-                sys.executable,
+            result = subprocess.run(
                 [
                     sys.executable,
                     "-m",
@@ -73,9 +63,10 @@ class SocialTimelineSmokeTests(unittest.TestCase):
                     "--source-name",
                     "X (Twitter)",
                 ],
-                env,
+                capture_output=True,
+                text=True,
             )
-            self.assertEqual(result, 0)
+            self.assertEqual(result.returncode, 0, result.stderr)
 
             normalized_payload = json.loads(normalized_path.read_text(encoding="utf-8"))
             self.assertEqual(len(normalized_payload), 3)

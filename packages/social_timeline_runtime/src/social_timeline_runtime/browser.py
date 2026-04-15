@@ -3,15 +3,31 @@
 The published skill should not depend on IDE-specific MCP wiring. This client
 talks directly to Chrome's remote-debugging HTTP and WebSocket endpoints so the
 runtime can own browser automation behavior.
+
+Chrome 147+ requires ``--user-data-dir`` for remote debugging. This module
+manages a dedicated profile directory so that login sessions persist across
+runs without touching the user's default Chrome profile.
 """
 
 from __future__ import annotations
 
 import json
+import os
+import platform
+import shutil
+import subprocess
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
+from pathlib import Path
+
+# Dedicated profile directory — keeps login sessions across runs.
+_DEFAULT_PROFILE_DIR = Path.home() / ".news-report" / "chrome-profile"
+_DEFAULT_PORT = 9222
+_LAUNCH_WAIT_SECONDS = 6
+_LAUNCH_POLL_INTERVAL = 0.5
 
 
 @dataclass(frozen=True)
@@ -174,3 +190,79 @@ class CDPSession:
         if isinstance(output, dict) and "value" in output:
             return output["value"]
         return output
+
+
+# ---------------------------------------------------------------------------
+# Chrome auto-launch
+# ---------------------------------------------------------------------------
+
+
+def _find_chrome_binary() -> str | None:
+    """Return the path to a Chrome binary, or None if not found."""
+    system = platform.system()
+    if system == "Darwin":
+        path = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        if os.path.isfile(path):
+            return path
+    elif system == "Linux":
+        for name in ("google-chrome", "google-chrome-stable", "chromium", "chromium-browser"):
+            found = shutil.which(name)
+            if found:
+                return found
+    elif system == "Windows":
+        for base in (os.environ.get("PROGRAMFILES", ""), os.environ.get("PROGRAMFILES(X86)", "")):
+            if not base:
+                continue
+            path = os.path.join(base, "Google", "Chrome", "Application", "chrome.exe")
+            if os.path.isfile(path):
+                return path
+    return shutil.which("google-chrome") or shutil.which("chrome")
+
+
+def _is_debug_port_alive(port: int) -> bool:
+    """Return True if Chrome's debug HTTP endpoint is responding."""
+    try:
+        url = f"http://127.0.0.1:{port}/json/version"
+        with urllib.request.urlopen(url, timeout=2):
+            return True
+    except Exception:
+        return False
+
+
+def ensure_chrome(
+    port: int = _DEFAULT_PORT,
+    profile_dir: Path | None = None,
+) -> ChromeRemote:
+    """Return a ChromeRemote connected to a debug-enabled Chrome instance.
+
+    If no Chrome is listening on *port*, one is launched automatically using a
+    dedicated ``--user-data-dir`` so that remote debugging works on Chrome 147+
+    and login sessions persist across runs.
+    """
+    base_url = f"http://127.0.0.1:{port}"
+
+    if _is_debug_port_alive(port):
+        return ChromeRemote(base_url)
+
+    chrome_bin = _find_chrome_binary()
+    if chrome_bin is None:
+        raise ChromeDebugError("Could not find a Chrome binary. Install Google Chrome or set PATH.")
+
+    profile = profile_dir or _DEFAULT_PROFILE_DIR
+    profile.mkdir(parents=True, exist_ok=True)
+
+    cmd = [
+        chrome_bin,
+        f"--remote-debugging-port={port}",
+        "--remote-allow-origins=*",
+        f"--user-data-dir={profile}",
+    ]
+    subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+    deadline = time.monotonic() + _LAUNCH_WAIT_SECONDS
+    while time.monotonic() < deadline:
+        if _is_debug_port_alive(port):
+            return ChromeRemote(base_url)
+        time.sleep(_LAUNCH_POLL_INTERVAL)
+
+    raise ChromeDebugError(f"Launched Chrome but debug port {port} did not respond within {_LAUNCH_WAIT_SECONDS}s")

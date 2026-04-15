@@ -13,9 +13,10 @@ import sys
 from collections.abc import Callable
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.parse import urlparse
 
 from social_timeline_runtime.agent_backend import run_agent_task
-from social_timeline_runtime.browser import ChromeDebugError, ChromeRemote
+from social_timeline_runtime.browser import ChromeDebugError, ChromeRemote, ensure_chrome
 from social_timeline_runtime.normalize import normalize_jike_posts, normalize_x_posts
 from social_timeline_runtime.notifications import send_notification
 from social_timeline_runtime.sites import inspect_login, scrape_site
@@ -77,9 +78,15 @@ def _json_default(value: object) -> str:
     raise TypeError(f"Object of type {type(value).__name__} is not JSON serializable")
 
 
+def _get_chrome(args: argparse.Namespace) -> ChromeRemote:
+    """Return a ChromeRemote, auto-launching Chrome if needed."""
+    url = getattr(args, "chrome_url", "http://127.0.0.1:9222")
+    return ensure_chrome(port=urlparse(url).port or 9222)
+
+
 def _cmd_check_login(args: argparse.Namespace) -> int:
     try:
-        status = inspect_login(ChromeRemote(args.chrome_url), args.site)
+        status = inspect_login(_get_chrome(args), args.site)
     except ChromeDebugError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
@@ -89,7 +96,7 @@ def _cmd_check_login(args: argparse.Namespace) -> int:
 
 def _cmd_scrape(args: argparse.Namespace) -> int:
     try:
-        payload = scrape_site(ChromeRemote(args.chrome_url), args.site)
+        payload = scrape_site(_get_chrome(args), args.site)
     except ChromeDebugError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 1
