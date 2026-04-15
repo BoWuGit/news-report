@@ -51,14 +51,18 @@ Tracks the last-seen cursor so successive runs skip already-reported content.
 ```json
 {
   "x_last_seen_id": "2044045951279808885",
-  "jike_last_seen_anchor": "Lightory|现在把播客分为三类"
+  "jike_last_seen": {
+    "author": "Lightory",
+    "text": "现在把播客分为三类"
+  }
 }
 ```
 
 - **X**: Post URLs contain monotonically increasing status IDs. Store the max ID
   seen; next run only includes posts with a higher ID.
-- **Jike**: No visible post IDs. Anchor = `"author|first_30_chars"` of the newest
-  post. Next run collects posts until hitting the anchor.
+- **Jike**: No visible post IDs. Store the newest post in
+  `jike_last_seen.author` and `jike_last_seen.text` (first 30 chars recommended).
+  Next run collects posts until hitting the same `(author, text)` pair.
 - **Fallback**: If the file is missing (first run), use a 24-hour cutoff based on
   relative timestamps.
 - **Write timing**: Update `scrape-state.json` only **after** the briefing file is
