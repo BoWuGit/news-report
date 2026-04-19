@@ -1,16 +1,18 @@
 # News Report For User Agent
 
-> 面向用户 Agent 的新闻简报 —— 让 AI 助手帮你高效获取个性化信息
+**English** · [简体中文](./README.zh-CN.md)
 
-随着个人 AI 助手（如 [OpenClaw](https://github.com/openclaw/openclaw)）的成熟，用户 Agent 越来越需要结构化的信息获取能力。**News Report** 致力于成为面向 Agent 的 [RSSHub](https://rsshub.app/)——为 AI 助手提供发现优质信息源、处理转换内容、生成个性化简报的工具和服务。
+> News briefings for user agents — help AI assistants deliver personalized information efficiently.
 
-## 核心定位
+As personal AI assistants (such as [OpenClaw](https://github.com/openclaw/openclaw)) mature, user agents increasingly need structured information retrieval. **News Report** aims to be an [RSSHub](https://rsshub.app/)-style layer for agents — tools and services that help AI assistants discover quality sources, normalize and enrich content, and generate personalized briefings.
+
+## Positioning
 
 ```text
-用户 Agent
+User agent
         |
         v
-News Report（信息处理中间件）
+News Report (information middleware)
 - source registry
 - normalization
 - enrichment
@@ -20,88 +22,100 @@ News Report（信息处理中间件）
 RSS / API / Newsletter / Podcast / Social / Read-later
 ```
 
-- **不收集用户信息**：用户可将偏好输入 News Report，通过计算返回个性化结果
-- **不限定内容分类**：专注于提供内容处理的工具和技术
-- **不直接生产内容**：聚合、转换、总结已有内容
+- **No user profiling**: users can supply preferences to News Report and receive personalized results through computation alone
+- **No fixed taxonomy**: focused on reusable processing primitives rather than a single content vertical
+- **Does not author primary content**: aggregates, transforms, and summarizes existing material
 
-## 项目阶段
+## Project phases
 
-### Phase 1：资源收集与社区（当前）
+### Phase 1: Resource collection & community (current)
 
-收集已有和新出现的服务、工具，整理分类来分享，了解用户的喜好和需求。
+Curate existing and emerging services and tools, organize them for sharing, and learn what people want.
 
-这版仓库已经补上了三个基础层：
+This repository already includes three foundational layers:
 
-- `data/`：资源清单的结构化数据
-- `schemas/`：Phase 1 和后续 MVP 可复用的数据模型
-- `docs/`：路线图、MVP 规格、开放问题、自动生成目录
+- `data/`: structured inventories of resources
+- `schemas/`: reusable data models for Phase 1 and later MVP work
+- `docs/`: roadmap, MVP specs, open questions, and an auto-generated catalog
 
-### Phase 2：工具开发与整合
+### Phase 2: Tooling & integration
 
-设计和开发面向 Agent 的信息处理工具：
-- 信息源发现与聚合
-- 内容处理与转换（总结、翻译、格式化）
-- 简报生成
+Design and build agent-facing information tools:
 
-### Phase 3：服务化部署
+- Source discovery and aggregation
+- Content processing and transformation (summarize, translate, format)
+- Briefing generation
 
-- 开源部署，提供优质内容的公开访问
-- 按需个性化部署（类似 Hugging Face 模型服务）
-- 支持用户组团部署，分摊成本
+### Phase 3: Service deployment
 
-## 生态资源
+- Open-source deployment with public access to quality content
+- On-demand personalized deployments (similar in spirit to Hugging Face model hosting)
+- Shared deployments to split costs across groups
 
-### SaaS 信息源服务
+## Ecosystem resources
 
-| 服务 | 说明 |
-|------|------|
-| [Inoreader Intelligence Reports](https://www.inoreader.com/blog/2026/03/automated-intelligence-reports-for-insights-delivered-to-you.html) | RSS 阅读器，支持自动化智能报告 |
-| [Readwise CLI](https://x.com/readwise/status/2034302848805241282) | 阅读高亮和文章的 CLI 工具，支持 Agent 接入 |
+### SaaS source services
 
-### [Agent Skills](https://agentskills.io) / CLI 工具
+| Service | Notes |
+|---------|-------|
+| [Inoreader Intelligence Reports](https://www.inoreader.com/blog/2026/03/automated-intelligence-reports-for-insights-delivered-to-you.html) | RSS reader with automated intelligence reports |
+| [Readwise CLI](https://x.com/readwise/status/2034302848805241282) | CLI for highlights and articles with agent integration |
 
-| 工具 | 说明 |
-|------|------|
-| [Podwise CLI](https://github.com/hardhackerlabs/podwise-cli) | 播客转录总结，支持 MCP Server 和 [Agent Skills](https://agentskills.io) |
-| [TransCrab](https://github.com/onevcat/transcrab) | OpenClaw-first 翻译管线，将链接转为精美的翻译阅读页 |
-| [baoyu-youtube-transcript](https://github.com/jimliu/baoyu-skills) | YouTube 视频字幕下载，支持多语言、章节和说话人识别 |
-| [RSSHub](https://github.com/DIYgod/RSSHub) | 万物皆可 RSS，42k+ Stars |
-| [bb-browser](https://github.com/epiral/bb-browser) | 复用真实浏览器登录态的 AI 浏览器工具，可为需要登录的信息源（Twitter、小红书等）提供数据获取能力；其本地浏览历史推荐机制也值得参考 |
+### [Agent Skills](https://agentskills.io) / CLI tools
 
-完整资源目录见 [docs/catalog.md](docs/catalog.md)，源数据见 [data/sources.json](data/sources.json)。
+| Tool | Notes |
+|------|-------|
+| [Podwise CLI](https://github.com/hardhackerlabs/podwise-cli) | Podcast transcription & summarization with MCP server and [Agent Skills](https://agentskills.io) |
+| [TransCrab](https://github.com/onevcat/transcrab) | OpenClaw-first translation pipeline turning links into polished reading pages |
+| [baoyu-youtube-transcript](https://github.com/jimliu/baoyu-skills) | YouTube transcript download with multilingual, chapter, and speaker support |
+| [RSSHub](https://github.com/DIYgod/RSSHub) | “Everything can be RSS” — 42k+ stars |
+| [bb-browser](https://github.com/epiral/bb-browser) | AI browser that reuses real login sessions for sources that require auth (e.g. Twitter, Xiaohongshu); local browsing-history recommendations are also worth a look |
 
-## 快速使用
+See the full catalog in [docs/catalog.md](docs/catalog.md) and raw data in [data/sources.json](data/sources.json).
 
-生成资源目录：
+## Quick start
+
+Build the resource catalog:
 
 ```bash
 uv run scripts/build_catalog.py
 ```
 
-生成一个本地 briefing 原型输出：
+Generate a local briefing prototype:
 
 ```bash
 uv run scripts/generate_briefing.py examples/briefing-request.json
 ```
 
-运行测试：
+Run tests:
 
 ```bash
 uv run pytest
 ```
 
-## 前置依赖和假定
+## Skill packaging boundary
 
-- AI 生态的用户 Memory 会越来越成熟
-  - 不管是 Local First 的 [OpenClaw](https://github.com/openclaw/openclaw)，还是各大 Super App
-  - 尽管仍有挑战（如 [Karpathy 指出的记忆干扰问题](https://x.com/karpathy/status/2036836816654147718)）
-- Agent 需要能缓解用户的信息过载——信息处理总结是 AI 擅长的
+Social timeline briefing is being shaped into a publishable skill plus a standalone runtime:
 
-## 参考引用
+- Published skill scaffold: [skills/scraping-social-timeline/SKILL.md](skills/scraping-social-timeline/SKILL.md)
+- Runtime package scaffold: [packages/social_timeline_runtime/README.md](packages/social_timeline_runtime/README.md)
+- Architecture notes: [docs/architecture/social-timeline-skill-packaging.md](docs/architecture/social-timeline-skill-packaging.md)
 
-- 前序文章：[阅读产品在AI时代的想象力](https://mp.weixin.qq.com/s/sSP9j-qLZQBJiyLSrCYzWQ)
-- [Karpathy: LLM Knowledge Bases](https://x.com/karpathy/status/2039805659525644595) — 用 LLM 构建个人知识库的完整工作流，与本项目方向高度吻合
-- 感谢 [One2X](https://one2x.ai) 冠哥之前的产品思考对项目的启发
+Existing `.agents/skills/` integrations remain until the runtime CLI migration stabilizes.
+
+## Assumptions & prerequisites
+
+
+- User memory in the AI ecosystem will keep maturing
+  - Whether local-first stacks like [OpenClaw](https://github.com/openclaw/openclaw) or large “super apps”
+  - Challenges remain (e.g. [Karpathy on memory interference](https://x.com/karpathy/status/2036836816654147718))
+- Agents must help with information overload — summarization and synthesis are strengths of LLMs
+
+## References
+
+- Earlier essay: [阅读产品在AI时代的想象力](https://mp.weixin.qq.com/s/sSP9j-qLZQBJiyLSrCYzWQ) (Chinese)
+- [Karpathy: LLM Knowledge Bases](https://x.com/karpathy/status/2039805659525644595) — end-to-end workflow for personal knowledge bases with LLMs, closely aligned with this project
+- Thanks to [One2X](https://one2x.ai) Guange for product thinking that inspired the direction
 
 ## License
 
