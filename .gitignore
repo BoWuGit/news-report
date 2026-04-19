@@ -10,3 +10,5 @@ __pycache__/
 .venv/
 *.egg-info/
 uv.lock
+output/
+data/scrape-state.json

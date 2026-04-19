@@ -36,6 +36,7 @@ def _register_builtin_adapters() -> None:
     """Lazily populate ADAPTER_MAP with adapters that ship with news-report."""
     if ADAPTER_MAP:
         return
+
     ADAPTER_MAP["rsshub"] = RSSHubAdapter
 
 

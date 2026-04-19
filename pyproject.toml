@@ -7,13 +7,15 @@ name = "news-report"
 version = "0.1.0"
 description = "News Report For User Agent — Agent-oriented information processing middleware"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 license = "MIT"
 dependencies = [
     "httpx>=0.27",
     "feedparser>=6.0",
     "jsonschema>=4.20",
     "mcp>=1.0",
+    "social-timeline-runtime",
+    "websocket-client>=1.8",
 ]
 
 [project.scripts]
@@ -32,8 +34,14 @@ dev = [
 "data" = "news_report/data"
 "schemas" = "news_report/schemas"
 
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+social-timeline-runtime = { workspace = true }
+
 [tool.ruff]
-target-version = "py311"
+target-version = "py312"
 line-length = 120
 
 [tool.ruff.lint]
