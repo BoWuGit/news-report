@@ -18,6 +18,20 @@ This file is generated from `data/sources.json` by `scripts/build_catalog.py`.
 - note: Part of baoyu-skills. Supports caching, SRT output, and translation.
 - note: Useful for turning video content into structured text for briefing generation.
 
+### Cubox CLI
+
+- id: `cubox-cli`
+- url: https://help.cubox.pro/ai/agents
+- interfaces: `cli`, `skills`, `api`
+- content types: `article`, `highlight`, `note`, `read_later`
+- open source: `no`
+- agent friendly: `high`
+- pricing: `mixed`
+- stage: `active`
+- summary: Official Cubox command-line interface that lets AI agents read, search, collect, and organize a user's private reading library.
+- note: Strong reference for private read-later libraries becoming agent-callable information sources.
+- note: Useful benchmark for search, highlights, Markdown content retrieval, and cross-tool workflows.
+
 ### MarsWave Skills
 
 - id: `marswave-skills`

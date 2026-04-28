@@ -65,6 +65,7 @@ RSS / API / Newsletter / Podcast / Social / Read-later
 | 工具 | 说明 |
 |------|------|
 | [Podwise CLI](https://github.com/hardhackerlabs/podwise-cli) | 播客转录总结，支持 MCP Server 和 [Agent Skills](https://agentskills.io) |
+| [Cubox CLI](https://help.cubox.pro/ai/agents) | Cubox 官方 CLI，支持 Agent 访问个人阅读库、标注、搜索和整理工作流 |
 | [TransCrab](https://github.com/onevcat/transcrab) | OpenClaw-first 翻译管线，将链接转为精美的翻译阅读页 |
 | [baoyu-youtube-transcript](https://github.com/jimliu/baoyu-skills) | YouTube 视频字幕下载，支持多语言、章节和说话人识别 |
 | [RSSHub](https://github.com/DIYgod/RSSHub) | 万物皆可 RSS，42k+ Stars |
@@ -112,6 +113,7 @@ uv run pytest
 ## 参考引用
 
 - 前序文章：[阅读产品在AI时代的想象力](https://mp.weixin.qq.com/s/sSP9j-qLZQBJiyLSrCYzWQ)
+- [Cubox CLI - 唤醒你沉睡的阅读宝藏](https://mp.weixin.qq.com/s/5FF4lthSEBKNDSzOZcpIfg) — 个人阅读记忆被 Agent 调用的产品案例
 - [Karpathy: LLM Knowledge Bases](https://x.com/karpathy/status/2039805659525644595) — 用 LLM 构建个人知识库的完整工作流，与本项目方向高度吻合
 - 感谢 [One2X](https://one2x.ai) 冠哥之前的产品思考对项目的启发
 

@@ -61,6 +61,24 @@
     "last_verified": "2026-03-28"
   },
   {
+    "id": "cubox-cli",
+    "name": "Cubox CLI",
+    "url": "https://help.cubox.pro/ai/agents",
+    "category": "agent_tool",
+    "interface_types": ["cli", "skills", "api"],
+    "content_types": ["article", "highlight", "note", "read_later"],
+    "open_source": false,
+    "agent_friendly": "high",
+    "stage": "active",
+    "pricing": "mixed",
+    "summary": "Official Cubox command-line interface that lets AI agents read, search, collect, and organize a user's private reading library.",
+    "notes": [
+      "Strong reference for private read-later libraries becoming agent-callable information sources.",
+      "Useful benchmark for search, highlights, Markdown content retrieval, and cross-tool workflows."
+    ],
+    "last_verified": "2026-04-28"
+  },
+  {
     "id": "podwise-cli",
     "name": "Podwise CLI",
     "url": "https://github.com/hardhackerlabs/podwise-cli",

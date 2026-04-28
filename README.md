@@ -66,6 +66,7 @@ Design and build agent-facing information tools:
 | Tool | Notes |
 |------|-------|
 | [Podwise CLI](https://github.com/hardhackerlabs/podwise-cli) | Podcast transcription & summarization with MCP server and [Agent Skills](https://agentskills.io) |
+| [Cubox CLI](https://help.cubox.pro/ai/agents) | Official Cubox CLI for agent access to private reading libraries, highlights, search, and organization workflows |
 | [TransCrab](https://github.com/onevcat/transcrab) | OpenClaw-first translation pipeline turning links into polished reading pages |
 | [baoyu-youtube-transcript](https://github.com/jimliu/baoyu-skills) | YouTube transcript download with multilingual, chapter, and speaker support |
 | [RSSHub](https://github.com/DIYgod/RSSHub) | “Everything can be RSS” — 42k+ stars |
@@ -114,6 +115,7 @@ Existing `.agents/skills/` integrations remain until the runtime CLI migration s
 ## References
 
 - Earlier essay: [阅读产品在AI时代的想象力](https://mp.weixin.qq.com/s/sSP9j-qLZQBJiyLSrCYzWQ) (Chinese)
+- [Cubox CLI - 唤醒你沉睡的阅读宝藏](https://mp.weixin.qq.com/s/5FF4lthSEBKNDSzOZcpIfg) — product case for making private reading memory callable by agents
 - [Karpathy: LLM Knowledge Bases](https://x.com/karpathy/status/2039805659525644595) — end-to-end workflow for personal knowledge bases with LLMs, closely aligned with this project
 - Thanks to [One2X](https://one2x.ai) Guange for product thinking that inspired the direction
 
