@@ -2,9 +2,9 @@
 
 [English](./README.md) · **简体中文**
 
-> 面向用户 Agent 的新闻简报 —— 让 AI 助手帮你高效获取个性化信息
+> 面向用户 Agent 的新闻简报编译器 —— 把分散、嘈杂、多格式的信息源，转成可验证、可个性化、可机器调用的结构化简报
 
-随着个人 AI 助手（如 [OpenClaw](https://github.com/openclaw/openclaw)）的成熟，用户 Agent 越来越需要结构化的信息获取能力。**News Report** 致力于成为面向 Agent 的 [RSSHub](https://rsshub.app/)——为 AI 助手提供发现优质信息源、处理转换内容、生成个性化简报的工具和服务。
+随着个人 AI 助手（如 [OpenClaw](https://github.com/openclaw/openclaw)）的成熟，用户 Agent 越来越需要结构化、可调用、可审计的信息获取能力。**News Report** 是面向用户 Agent 的新闻简报编译器：帮助 AI 助手发现优质信息源、归一化并增强内容，并通过 CLI、MCP、Schema 等 Agent-facing 接口生成可消费的个性化简报。
 
 ## 核心定位
 
@@ -12,7 +12,7 @@
 用户 Agent
         |
         v
-News Report（信息处理中间件）
+News Report（Agent-native 新闻简报编译器）
 - source registry
 - normalization
 - enrichment
@@ -25,6 +25,7 @@ RSS / API / Newsletter / Podcast / Social / Read-later
 - **不收集用户信息**：用户可将偏好输入 News Report，通过计算返回个性化结果
 - **不限定内容分类**：专注于提供内容处理的工具和技术
 - **不直接生产内容**：聚合、转换、总结已有内容
+- **默认 Agent-native**：输出结构化、可解释，便于用户 Agent 调用、验证和复用
 
 ## 项目阶段
 

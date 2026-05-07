@@ -2,9 +2,9 @@
 
 **English** · [简体中文](./README.zh-CN.md)
 
-> News briefings for user agents — help AI assistants deliver personalized information efficiently.
+> Agent-native briefing compiler — turn messy, multi-source information streams into verifiable, personalized, machine-readable briefings.
 
-As personal AI assistants (such as [OpenClaw](https://github.com/openclaw/openclaw)) mature, user agents increasingly need structured information retrieval. **News Report** aims to be an [RSSHub](https://rsshub.app/)-style layer for agents — tools and services that help AI assistants discover quality sources, normalize and enrich content, and generate personalized briefings.
+As personal AI assistants (such as [OpenClaw](https://github.com/openclaw/openclaw)) mature, user agents increasingly need structured, callable, and auditable information retrieval. **News Report** is an agent-native briefing compiler: it helps AI assistants discover quality sources, normalize and enrich content, and generate briefings that can be consumed through CLI, MCP, schemas, and other agent-facing interfaces.
 
 ## Positioning
 
@@ -12,7 +12,7 @@ As personal AI assistants (such as [OpenClaw](https://github.com/openclaw/opencl
 User agent
         |
         v
-News Report (information middleware)
+News Report (agent-native briefing compiler)
 - source registry
 - normalization
 - enrichment
@@ -25,6 +25,7 @@ RSS / API / Newsletter / Podcast / Social / Read-later
 - **No user profiling**: users can supply preferences to News Report and receive personalized results through computation alone
 - **No fixed taxonomy**: focused on reusable processing primitives rather than a single content vertical
 - **Does not author primary content**: aggregates, transforms, and summarizes existing material
+- **Agent-native by default**: outputs are structured, explainable, and designed for user agents to call, verify, and reuse
 
 ## Project phases
 
