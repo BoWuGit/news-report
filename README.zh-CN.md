@@ -79,19 +79,51 @@ RSS / API / Newsletter / Podcast / Social / Read-later
 生成资源目录：
 
 ```bash
-uv run scripts/build_catalog.py
+uv run news-report catalog build
 ```
 
 生成一个本地 briefing 原型输出：
 
 ```bash
-uv run scripts/generate_briefing.py examples/briefing-request.json
+uv run news-report briefing generate examples/briefing-request.json
+```
+
+从 stdin 读取请求 JSON：
+
+```bash
+cat examples/briefing-request.json | uv run news-report briefing generate - --format markdown
+```
+
+查看 Agent 可发现的元数据：
+
+```bash
+uv run news-report sources list --json
+uv run news-report sources get rsshub --json
+uv run news-report schemas get briefing-request
+uv run news-report doctor --skip-network
+```
+
+旧入口仍然保留：
+
+```bash
+uv run build-catalog
+uv run generate-briefing examples/briefing-request.json
+uv run news-report-mcp
 ```
 
 运行测试：
 
 ```bash
 uv run pytest
+```
+
+### 用 `ntn` 发布 briefing 到 Notion
+
+如果你使用 [Notion CLI](https://developers.notion.com/cli/get-started/overview)，可以直接生成 Markdown 并写入 Notion 页面：
+
+```bash
+uv run news-report briefing generate examples/briefing-request.json --format markdown \
+  | ntn pages create --parent page:$NOTION_PAGE_ID
 ```
 
 ## Skill Packaging Boundary

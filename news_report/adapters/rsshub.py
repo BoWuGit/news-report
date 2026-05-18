@@ -6,7 +6,7 @@ import calendar
 import hashlib
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import feedparser
 import httpx
@@ -48,10 +48,10 @@ def _parse_published(entry: dict, *, fallback: datetime | None = None) -> dateti
         parsed = entry.get(field)
         if parsed is not None:
             try:
-                return datetime.fromtimestamp(calendar.timegm(parsed), tz=timezone.utc)
+                return datetime.fromtimestamp(calendar.timegm(parsed), tz=UTC)
             except (TypeError, ValueError, OverflowError):
                 continue
-    return fallback if fallback is not None else datetime.now(timezone.utc)
+    return fallback if fallback is not None else datetime.now(UTC)
 
 
 def _entry_id(entry: dict, source_id: str, route: str) -> str:
@@ -74,7 +74,7 @@ class RSSHubAdapter:
 
     def fetch(self, topic: str, summary_style: str, now: datetime | None = None) -> list[dict]:
         """Fetch candidates from RSSHub routes matching *topic*."""
-        resolved_now = now or datetime.now(timezone.utc)
+        resolved_now = now or datetime.now(UTC)
         routes = TOPIC_ROUTE_MAP.get(topic.lower(), DEFAULT_ROUTES)
         candidates: list[dict] = []
 

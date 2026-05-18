@@ -80,19 +80,51 @@ See the full catalog in [docs/catalog.md](docs/catalog.md) and raw data in [data
 Build the resource catalog:
 
 ```bash
-uv run scripts/build_catalog.py
+uv run news-report catalog build
 ```
 
 Generate a local briefing prototype:
 
 ```bash
-uv run scripts/generate_briefing.py examples/briefing-request.json
+uv run news-report briefing generate examples/briefing-request.json
+```
+
+Read request JSON from stdin:
+
+```bash
+cat examples/briefing-request.json | uv run news-report briefing generate - --format markdown
+```
+
+Inspect agent-facing metadata:
+
+```bash
+uv run news-report sources list --json
+uv run news-report sources get rsshub --json
+uv run news-report schemas get briefing-request
+uv run news-report doctor --skip-network
+```
+
+Backward-compatible entry points remain available:
+
+```bash
+uv run build-catalog
+uv run generate-briefing examples/briefing-request.json
+uv run news-report-mcp
 ```
 
 Run tests:
 
 ```bash
 uv run pytest
+```
+
+### Publish a briefing to Notion with `ntn`
+
+If you use the [Notion CLI](https://developers.notion.com/cli/get-started/overview), generate Markdown and pipe it into a Notion page:
+
+```bash
+uv run news-report briefing generate examples/briefing-request.json --format markdown \
+  | ntn pages create --parent page:$NOTION_PAGE_ID
 ```
 
 ## Skill packaging boundary

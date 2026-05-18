@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import unittest
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from time import struct_time
 from unittest.mock import MagicMock, patch
 
@@ -113,7 +113,7 @@ class ParsePublishedTests(unittest.TestCase):
         entry = {"published_parsed": None}
         result = _parse_published(entry)
         self.assertIsInstance(result, datetime)
-        self.assertEqual(result.tzinfo, timezone.utc)
+        self.assertEqual(result.tzinfo, UTC)
 
     def test_valid_published_parsed(self) -> None:
         # 2026-01-15 12:00:00 UTC as struct_time

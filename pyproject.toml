@@ -17,6 +17,7 @@ dependencies = [
 ]
 
 [project.scripts]
+news-report = "news_report.cli:main"
 build-catalog = "news_report.cli:build_catalog_cli"
 generate-briefing = "news_report.cli:generate_briefing_cli"
 news-report-mcp = "news_report.mcp_server:main"
@@ -54,7 +55,7 @@ select = [
 # MCP tool docstrings are intentionally in Chinese (LLM-facing, target audience)
 "news_report/mcp_server.py" = ["RUF001", "RUF002", "RUF003"]
 # Scripts need sys.path manipulation before importing project modules
-"scripts/*.py" = ["E402"]
+"scripts/*.py" = ["E402", "I001"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["news_report"]

@@ -1,0 +1,51 @@
+# News Report
+
+Agent-native briefing compiler: discover sources, normalize content, and generate verifiable personalized briefings through CLI, MCP, and JSON Schemas.
+
+## Primary docs
+
+- [README](./README.md): English overview, positioning, quick start, CLI usage, and Notion publishing workflow.
+- [README.zh-CN](./README.zh-CN.md): Chinese overview and usage notes.
+- [MVP spec](./docs/mvp-spec.md): First briefing request/response shape and non-goals.
+- [Phase 1 roadmap](./docs/phase1-roadmap.md): Resource registry and adapter roadmap.
+- [Open questions](./docs/open-questions.md): Product and technical decision notes.
+- [Resource catalog](./docs/catalog.md): Generated source catalog from `data/sources.json`.
+
+## Machine-readable contracts
+
+- [Source registry](./data/sources.json): Structured list of supported and reference information sources.
+- [Source schema](./schemas/source.schema.json): JSON Schema for source registry records.
+- [Briefing request schema](./schemas/briefing-request.schema.json): JSON Schema for `news-report briefing generate` input.
+- [Briefing response schema](./schemas/briefing-response.schema.json): JSON Schema for generated briefing output.
+
+## CLI entry points
+
+```bash
+news-report briefing generate examples/briefing-request.json
+cat examples/briefing-request.json | news-report briefing generate -
+news-report sources list --json
+news-report sources get rsshub --json
+news-report sources check podwise-cli --json
+news-report schemas list --json
+news-report schemas get briefing-request
+news-report mcp serve
+news-report doctor --skip-network
+```
+
+Backward-compatible scripts remain available:
+
+```bash
+build-catalog
+generate-briefing examples/briefing-request.json
+news-report-mcp
+```
+
+## MCP surface
+
+The MCP server exposes:
+
+- `generate_briefing_tool`: generate JSON or Markdown briefings.
+- `list_sources_tool`: list source metadata for planning requests.
+- `check_source_health_tool`: check adapter availability.
+- `news-report://sources`: full source registry resource.
+- `news-report://schema/briefing-request`: briefing request schema resource.
